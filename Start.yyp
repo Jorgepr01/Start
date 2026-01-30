@@ -9,7 +9,11 @@
     "name":"Default",
   },
   "defaultScriptType":0,
-  "Folders":[],
+  "Folders":[
+    {"$GMFolder":"","%Name":"Fonts","folderPath":"folders/Fonts.yy","name":"Fonts","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Rooms","folderPath":"folders/Rooms.yy","name":"Rooms","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
+  ],
   "ForcedPrefabProjectReferences":[],
   "IncludedFiles":[],
   "isEcma":false,
