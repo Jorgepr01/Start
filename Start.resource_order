@@ -5,6 +5,10 @@
   ],
   "ResourceOrderSettings":[
     {"name":"Object2","order":1,"path":"objects/Object2/Object2.yy",},
+    {"name":"Josh_back","order":6,"path":"sprites/Josh_back/Josh_back.yy",},
+    {"name":"Josh_step_derecha","order":9,"path":"sprites/Josh_step_derecha/Josh_step_derecha.yy",},
+    {"name":"Josh_step_izquierda","order":10,"path":"sprites/Josh_step_izquierda/Josh_step_izquierda.yy",},
+    {"name":"Josh","order":3,"path":"sprites/Josh/Josh.yy",},
     {"name":"Porta_prueba","order":2,"path":"sprites/Porta_prueba/Porta_prueba.yy",},
     {"name":"Sprite4","order":3,"path":"sprites/Sprite4/Sprite4.yy",},
   ],
