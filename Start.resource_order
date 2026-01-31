@@ -1,4 +1,11 @@
 {
-  "FolderOrderSettings":[],
-  "ResourceOrderSettings":[],
+  "FolderOrderSettings":[
+    {"name":"Rooms","order":1,"path":"folders/Sprites/Rooms.yy",},
+    {"name":"Tile","order":2,"path":"folders/Tile.yy",},
+  ],
+  "ResourceOrderSettings":[
+    {"name":"Object2","order":1,"path":"objects/Object2/Object2.yy",},
+    {"name":"Porta_prueba","order":2,"path":"sprites/Porta_prueba/Porta_prueba.yy",},
+    {"name":"Sprite4","order":3,"path":"sprites/Sprite4/Sprite4.yy",},
+  ],
 }
