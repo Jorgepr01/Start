@@ -1,10 +1,10 @@
 {
   "$GMSprite":"v2",
-  "%Name":"Josh_step_derecha",
+  "%Name":"Josh_stop_izquierda",
   "bboxMode":0,
   "bbox_bottom":26,
-  "bbox_left":7,
-  "bbox_right":26,
+  "bbox_left":6,
+  "bbox_right":25,
   "bbox_top":1,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -12,16 +12,16 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"3d63c0d2-4fcb-4874-b32a-01bfbfb89e6e","name":"3d63c0d2-4fcb-4874-b32a-01bfbfb89e6e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"84fb55f4-3312-4723-967b-6bb3fe7c3fb0","name":"84fb55f4-3312-4723-967b-6bb3fe7c3fb0","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":32,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"d64959ea-c87d-4c7e-9bbd-e310fc1aea22","blendMode":0,"displayName":"default","isLocked":false,"name":"d64959ea-c87d-4c7e-9bbd-e310fc1aea22","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"30484d3a-8859-4bc3-89ba-5197050eb1ae","blendMode":0,"displayName":"default","isLocked":false,"name":"30484d3a-8859-4bc3-89ba-5197050eb1ae","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"Josh_step_derecha",
+  "name":"Josh_stop_izquierda",
   "nineSlice":null,
   "origin":0,
   "parent":{
@@ -33,7 +33,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"Josh_step_derecha",
+    "%Name":"Josh_stop_izquierda",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -57,7 +57,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"Josh_step_derecha",
+    "name":"Josh_stop_izquierda",
     "playback":1,
     "playbackSpeed":30.0,
     "playbackSpeedType":0,
@@ -69,8 +69,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"3d63c0d2-4fcb-4874-b32a-01bfbfb89e6e","path":"sprites/Josh_step_derecha/Josh_step_derecha.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"1e2fd87f-a13a-40b0-8923-9aed16f6be58","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"84fb55f4-3312-4723-967b-6bb3fe7c3fb0","path":"sprites/Josh_stop_izquierda/Josh_stop_izquierda.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"ef85c77e-fb62-42e7-b99d-5c6cae0a929e","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

@@ -1,6 +1,6 @@
 {
   "$GMSprite":"v2",
-  "%Name":"Josh",
+  "%Name":"Josh_stop_up",
   "bboxMode":0,
   "bbox_bottom":26,
   "bbox_left":5,
@@ -24,7 +24,7 @@
   "layers":[
     {"$GMImageLayer":"","%Name":"642fa6b4-bdd2-4760-97a9-86c1d0f273ff","blendMode":0,"displayName":"default","isLocked":false,"name":"642fa6b4-bdd2-4760-97a9-86c1d0f273ff","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"Josh",
+  "name":"Josh_stop_up",
   "nineSlice":{
     "$GMNineSliceData":"",
     "bottom":0,
@@ -55,7 +55,7 @@
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"Josh",
+    "%Name":"Josh_stop_up",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -79,7 +79,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"Josh",
+    "name":"Josh_stop_up",
     "playback":1,
     "playbackSpeed":2.0,
     "playbackSpeedType":0,
@@ -91,16 +91,16 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"57f7541d-ce15-4731-ae6c-853423b27e00","path":"sprites/Josh/Josh.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"57f7541d-ce15-4731-ae6c-853423b27e00","path":"sprites/Josh_stop_up/Josh_stop_up.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"7ca87057-3db6-4372-a325-47b79578d234","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"160fe3f3-63e8-4040-b7ee-e3effc7aa97a","path":"sprites/Josh/Josh.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"160fe3f3-63e8-4040-b7ee-e3effc7aa97a","path":"sprites/Josh_stop_up/Josh_stop_up.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"153179bb-62ab-449c-b9a5-4cdaf0875452","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"468d6dc3-9bc7-4279-ad3e-25fdb45c93aa","path":"sprites/Josh/Josh.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"468d6dc3-9bc7-4279-ad3e-25fdb45c93aa","path":"sprites/Josh_stop_up/Josh_stop_up.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"32b59f17-4ae0-4edb-b28d-84ed0221c704","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"37920e39-203a-4b17-a5e3-312106de27f0","path":"sprites/Josh/Josh.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"37920e39-203a-4b17-a5e3-312106de27f0","path":"sprites/Josh_stop_up/Josh_stop_up.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"9b7e75cf-d2e1-4f59-b90d-24ac2b042baf","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
