@@ -6,19 +6,41 @@ global.current_bgm = noone;
 
 // Base de datos (Structs)
     global.weapons = {
-        Latigo_basic: {
-            name: "Latigo basico",
-            dano: 3,
-            attack_speed: 1.2,
-            sprite: Josh_attack
+        Latigo: {
+            name: "Latigo",
+            ataque_ligero: { 
+                sprite: Josh_attack, // El que ya tienes
+                dano: 5, 
+                attack_speed: 1.5, 
+                frame_hit: 8 ,
+                empuje: 3
+            },
+            ataque_pesado: { 
+                sprite: Josh_attack, // (Sprite temporal hasta que tu amigo lo dibuje)
+                dano: 15, 
+                attack_speed: 0.5, 
+                frame_hit: 10,
+                empuje: 3
+            }
         },
-        Latigo_hard: {
-            name: "Latigo duro",
-            dano: 7,
-            attack_speed: 0.3,
-            sprite: Josh_attack
+        espadon_hierro: {
+            name: "Espadón Pesado",
+            ataque_ligero: { 
+                sprite: Josh_attack_2, 
+                dano: 10, 
+                attack_speed: 1.0, 
+                frame_hit: 9,
+                empuje: 3
+            },
+            ataque_pesado: { 
+                sprite: Josh_attack_2, 
+                dano: 25, 
+                attack_speed: 0.2, 
+                frame_hit: 12,
+                empuje: 3
+            }
         }
-    };
+         }
 
 // Crear los Managers
 instance_create_layer(0, 0, "Instances", obj_game_manager);

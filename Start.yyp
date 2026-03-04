@@ -33,6 +33,7 @@
   "resources":[
     {"id":{"name":"Menu_negrita","path":"fonts/Menu_negrita/Menu_negrita.yy",},},
     {"id":{"name":"Menu","path":"fonts/Menu/Menu.yy",},},
+    {"id":{"name":"obj_camara","path":"objects/obj_camara/obj_camara.yy",},},
     {"id":{"name":"obj_enemigo_dummy","path":"objects/obj_enemigo_dummy/obj_enemigo_dummy.yy",},},
     {"id":{"name":"obj_entidad","path":"objects/obj_entidad/obj_entidad.yy",},},
     {"id":{"name":"obj_game_manager","path":"objects/obj_game_manager/obj_game_manager.yy",},},
@@ -47,6 +48,7 @@
     {"id":{"name":"scr_constantes","path":"scripts/scr_constantes/scr_constantes.yy",},},
     {"id":{"name":"sound_attack","path":"sounds/sound_attack/sound_attack.yy",},},
     {"id":{"name":"sound_dash","path":"sounds/sound_dash/sound_dash.yy",},},
+    {"id":{"name":"Josh_attack_2","path":"sprites/Josh_attack_2/Josh_attack_2.yy",},},
     {"id":{"name":"Josh_attack","path":"sprites/Josh_attack/Josh_attack.yy",},},
     {"id":{"name":"Josh_rueda","path":"sprites/Josh_rueda/Josh_rueda.yy",},},
     {"id":{"name":"Josh_step_back","path":"sprites/Josh_step_back/Josh_step_back.yy",},},

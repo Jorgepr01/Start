@@ -17,3 +17,8 @@ global.key_up_pressed   = keyboard_check_pressed(vk_up)   || keyboard_check_pres
 // Tecla para rodar (Ejemplo: Shift o la tecla C)
 global.key_dash = keyboard_check_pressed(vk_shift) || keyboard_check_pressed(ord("C"));
 // NOTA: Si luego añades un mando, sumarías aquí la lógica con gamepad_button_check()
+
+// ataques
+global.key_ataque_ligero = keyboard_check_pressed(ord("J"));
+global.key_ataque_pesado = keyboard_check_pressed(ord("K"));
+global.key_cambiar_arma  = keyboard_check_pressed(ord("Q"));

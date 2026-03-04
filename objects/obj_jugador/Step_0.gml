@@ -23,9 +23,28 @@ switch (estado) {
             image_index = 0; 
         }
         // Si presiono acción, ataco
-        else if (global.key_action) {
+        // --- CAMBIO DE ARMA ---
+        else if (global.key_cambiar_arma) {
+            indice_arma = (indice_arma + 1) mod array_length(inventario_armas);
+            arma_equipada = inventario_armas[indice_arma];
+            show_debug_message("Arma actual: " + arma_equipada.name);
+        }
+        // --- ATAQUES ---
+        else if (global.key_ataque_ligero) {
             estado = PLAYER_STATE.ATTACK;
             image_index = 0;
+            hitbox_creada = false;
+            tipo_ataque = "ligero";
+        } 
+        else if (global.key_ataque_pesado) {
+            estado = PLAYER_STATE.ATTACK;
+            image_index = 0;
+            hitbox_creada = false;
+            tipo_ataque = "pesado";
+        }
+        else if (global.key_action) {
+            image_index = 0; 
+            estado = PLAYER_STATE.ATTACK;
             hitbox_creada = false;
         }
         else if (global.key_right || global.key_left || global.key_up || global.key_down) {
@@ -64,6 +83,25 @@ switch (estado) {
                 image_index = 0;
                 
             }
+        // --- CAMBIO DE ARMA ---
+        else if (global.key_cambiar_arma) {
+            indice_arma = (indice_arma + 1) mod array_length(inventario_armas);
+            arma_equipada = inventario_armas[indice_arma];
+            show_debug_message("Arma actual: " + arma_equipada.name);
+        }
+        // --- ATAQUES ---
+        else if (global.key_ataque_ligero) {
+            estado = PLAYER_STATE.ATTACK;
+            image_index = 0;
+            hitbox_creada = false;
+            tipo_ataque = "ligero";
+        } 
+        else if (global.key_ataque_pesado) {
+            estado = PLAYER_STATE.ATTACK;
+            image_index = 0;
+            hitbox_creada = false;
+            tipo_ataque = "pesado";
+        }
         else if (global.key_action) {
             image_index = 0; 
             estado = PLAYER_STATE.ATTACK;
@@ -75,32 +113,36 @@ switch (estado) {
     case PLAYER_STATE.ATTACK: // ESTADO: ATACANDO
     // ==========================================
         
-        //Impulso dinámico (Lee el impulso del arma equipada)
+        // 1. Cargar datos según el botón presionado
+        var _datos;
+        if (tipo_ataque == "ligero") { _datos = arma_equipada.ataque_ligero; } 
+        else { _datos = arma_equipada.ataque_pesado; }
+        
+        // 2. Aplicar Sprite e Impulso
+        sprite_index = _datos.sprite;
+
         if (image_index < image_number / 2) {
-            hsp = lengthdir_x(arma_equipada.attack_speed, direccion_mirando);
-            vsp = lengthdir_y(arma_equipada.attack_speed, direccion_mirando);
+            hsp = lengthdir_x(_datos.attack_speed, direccion_mirando);
+            vsp = lengthdir_y(_datos.attack_speed, direccion_mirando);
         } else {
-            hsp = 0;
-            vsp = 0;
+            hsp = 0; vsp = 0;
         }
-        
-        // En un futuro hacerr un array y con var _dir_cuadrante = round(direccion_mirando / 90) mod 4; ver a cual sprite moverte
-        sprite_index = arma_equipada.sprite;
-        
-        // la Hitbox
-        if (floor(image_index) == 8 && !hitbox_creada) {
-            var _distancia = 16;
-            var _xx = x + lengthdir_x(_distancia, direccion_mirando);
-            var _yy = y + lengthdir_y(_distancia, direccion_mirando);
+
+        // 3. Crear Hitbox Dinámica
+        if (floor(image_index) == _datos.frame_hit && !hitbox_creada) {
+            var _xx = x + lengthdir_x(16, direccion_mirando);
+            var _yy = y + lengthdir_y(16, direccion_mirando);
             var _hitbox = instance_create_layer(_xx, _yy, "Instances", obj_hitbox);
             
-            _hitbox.dano = arma_equipada.dano; //datos del arma
+            _hitbox.dano = _datos.dano;
             _hitbox.image_angle = direccion_mirando;
+            
             hitbox_creada = true;
         }
-        
+
+        // 4. Salir
         if (image_index >= image_number - 1) {
-            estado = PLAYER_STATE.IDLE; 
+            estado = PLAYER_STATE.IDLE;
         }
     break;
 
