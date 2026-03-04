@@ -137,6 +137,9 @@ switch (estado) {
             _hitbox.dano = _datos.dano;
             _hitbox.image_angle = direccion_mirando;
             
+            _hitbox.fuerza_empuje = _datos.empuje;
+            _hitbox.direccion_golpe = direccion_mirando;
+            
             hitbox_creada = true;
         }
 

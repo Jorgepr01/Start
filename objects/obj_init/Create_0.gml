@@ -20,24 +20,24 @@ global.current_bgm = noone;
                 dano: 15, 
                 attack_speed: 0.5, 
                 frame_hit: 10,
-                empuje: 3
+                empuje: 8
             }
         },
         espadon_hierro: {
             name: "Espadón Pesado",
             ataque_ligero: { 
-                sprite: Josh_attack_2, 
+                sprite: Sprite20, 
                 dano: 10, 
                 attack_speed: 1.0, 
                 frame_hit: 9,
                 empuje: 3
             },
             ataque_pesado: { 
-                sprite: Josh_attack_2, 
+                sprite: Sprite20, 
                 dano: 25, 
                 attack_speed: 0.2, 
                 frame_hit: 12,
-                empuje: 3
+                empuje: 8
             }
         }
          }
