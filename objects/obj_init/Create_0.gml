@@ -1,4 +1,4 @@
-// Evento Create de obj_init
+
 
 // Inicializar variables globales
 global.game_state = GAME_STATE.PLAYING;
@@ -6,17 +6,17 @@ global.current_bgm = noone;
 
 // Base de datos (Structs)
     global.weapons = {
-        sword_basic: {
-            name: "Espada de Madera",
-            damage: 5,
+        Latigo_basic: {
+            name: "Latigo basico",
+            dano: 3,
             attack_speed: 1.2,
-            sprite: noone
+            sprite: Josh_attack
         },
-        bow_basic: {
-            name: "Arco Corto",
-            damage: 3,
-            attack_speed: 0.8,
-            sprite: noone
+        Latigo_hard: {
+            name: "Latigo duro",
+            dano: 7,
+            attack_speed: 0.3,
+            sprite: Josh_attack
         }
     };
 

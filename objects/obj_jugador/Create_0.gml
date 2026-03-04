@@ -5,10 +5,9 @@ event_inherited();
 
 // Ajustes específicos del jugador
 velocidad_base =1; 
+estado = PLAYER_STATE.IDLE;// estado inicial
 
-// Estado inicial
-estado = PLAYER_STATE.IDLE;
-
-// En tu Evento Create, añade estas variables:
-velocidad_roll = 1.2; // Debe ser más alta que la velocidad_base
-direccion_mirando = 270; // 270 grados es hacia abajo por defecto
+velocidad_roll = 1.35; // velocidad del roll
+direccion_mirando = 270; // va abajo por defecto
+hitbox_creada = false;
+arma_equipada = global.weapons.Latigo_basic
