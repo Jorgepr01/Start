@@ -27,7 +27,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.4.986",
+    "IDEVersion":"2024.14.3.217",
   },
   "name":"Start",
   "resources":[
@@ -62,6 +62,7 @@
     {"id":{"name":"Prota_a","path":"sprites/Prota_a/Prota_a.yy",},},
     {"id":{"name":"Prueba","path":"sprites/Prueba/Prueba.yy",},},
     {"id":{"name":"Sprite14","path":"sprites/Sprite14/Sprite14.yy",},},
+    {"id":{"name":"Sprite18","path":"sprites/Sprite18/Sprite18.yy",},},
     {"id":{"name":"Sprite4","path":"sprites/Sprite4/Sprite4.yy",},},
     {"id":{"name":"str_htipbox","path":"sprites/str_htipbox/str_htipbox.yy",},},
     {"id":{"name":"TileSet1","path":"tilesets/TileSet1/TileSet1.yy",},},

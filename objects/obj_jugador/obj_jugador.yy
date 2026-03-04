@@ -34,8 +34,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"Josh",
-    "path":"sprites/Josh/Josh.yy",
+    "name":"Sprite18",
+    "path":"sprites/Sprite18/Sprite18.yy",
   },
   "spriteMaskId":null,
   "visible":true,
