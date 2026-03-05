@@ -9,8 +9,8 @@
   "name":"obj_jugador",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"personajes",
+    "path":"folders/Objects/personajes.yy",
   },
   "parentObjectId":{
     "name":"obj_entidad",

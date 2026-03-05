@@ -1,6 +1,6 @@
 {
   "$GMSound":"v2",
-  "%Name":"sound_dash",
+  "%Name":"bgm_nivel_pruebas",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -10,9 +10,9 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":1.7760091,
+  "duration":0.0,
   "exportDir":"",
-  "name":"sound_dash",
+  "name":"bgm_nivel_pruebas",
   "parent":{
     "name":"Sounds",
     "path":"folders/Sounds.yy",
@@ -21,6 +21,6 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"sound_dash.mp3",
-  "volume":0.3,
+  "soundFile":"",
+  "volume":1.0,
 }

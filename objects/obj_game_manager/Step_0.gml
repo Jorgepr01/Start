@@ -3,8 +3,7 @@
 if (global.key_pause) {
     show_debug_message("key_pause True", global.key_pause);
     if (global.game_state == GAME_STATE.PLAYING) {
-        // se pone en pausa
-        global.game_state = GAME_STATE.PAUSED;
+        global.game_state = GAME_STATE.PAUSED; // se pone en pausa
         
         // 1. Apaga todo (excepto a mí mismo, el obj_game_manager)
         instance_deactivate_all(true); 
@@ -14,8 +13,7 @@ if (global.key_pause) {
         instance_activate_object(obj_menu_principal);
         // instance_activate_object(obj_audio_manager);
         
-        // (Opcional) Aquí activarías el objeto que dibuja el menú de pausa
-        // instance_activate_object(obj_menu_pausa); 
+        // Aquí activarías el objeto que dibuja el menú de pausa
         instance_create_layer(0, 0, "UI_Layer", obj_menu_principal);
         
     } 

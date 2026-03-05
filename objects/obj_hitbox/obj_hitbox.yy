@@ -9,8 +9,8 @@
   "name":"obj_hitbox",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"temporales",
+    "path":"folders/Objects/temporales.yy",
   },
   "parentObjectId":null,
   "persistent":false,

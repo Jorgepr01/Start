@@ -21,6 +21,9 @@ switch (estado) {
         if (global.key_dash) {
             estado = PLAYER_STATE.DASH;
             image_index = 0; 
+            var _snd_dash = audio_play_sound(sound_dash, 1, false);
+            // Opcional: Le variamos el pitch para que cada voltereta suene ligeramente distinta
+            audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
         }
         // Si presiono acción, ataco
         // --- CAMBIO DE ARMA ---
@@ -81,7 +84,10 @@ switch (estado) {
         if (global.key_dash) {
                 estado = PLAYER_STATE.DASH;
                 image_index = 0;
-                
+                var _snd_dash = audio_play_sound(sound_dash, 1, false);
+                // Opcional: Le variamos el pitch para que cada voltereta suene ligeramente distinta
+                audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
+                    
             }
         // --- CAMBIO DE ARMA ---
         else if (global.key_cambiar_arma) {
@@ -130,6 +136,9 @@ switch (estado) {
 
         // 3. Crear Hitbox Dinámica
         if (floor(image_index) == _datos.frame_hit && !hitbox_creada) {
+            //var _sonido = audio_play_sound(sound_attack, 1, false); encuentra uno mejor
+            // Le cambiamos el tono (pitch) al azar entre un 80% y un 120% de su velocidad original
+            //audio_sound_pitch(_sonido, random_range(0.8, 1));
             var _xx = x + lengthdir_x(16, direccion_mirando);
             var _yy = y + lengthdir_y(16, direccion_mirando);
             var _hitbox = instance_create_layer(_xx, _yy, "Instances", obj_hitbox);

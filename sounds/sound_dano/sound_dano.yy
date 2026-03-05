@@ -1,6 +1,6 @@
 {
   "$GMSound":"v2",
-  "%Name":"sound_attack",
+  "%Name":"sound_dano",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -10,9 +10,9 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":1.1213605,
+  "duration":0.4861678,
   "exportDir":"",
-  "name":"sound_attack",
+  "name":"sound_dano",
   "parent":{
     "name":"Sounds",
     "path":"folders/Sounds.yy",
@@ -21,6 +21,6 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"sound_attack.mp3",
-  "volume":0.2,
+  "soundFile":"sound_dano.mp3",
+  "volume":0.15,
 }

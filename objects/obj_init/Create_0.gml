@@ -9,30 +9,30 @@ global.current_bgm = noone;
         Latigo: {
             name: "Latigo",
             ataque_ligero: { 
-                sprite: Josh_attack, // El que ya tienes
+                sprite: Josh_attack,
                 dano: 5, 
                 attack_speed: 1.5, 
                 frame_hit: 8 ,
                 empuje: 3
             },
             ataque_pesado: { 
-                sprite: Josh_attack, // (Sprite temporal hasta que tu amigo lo dibuje)
+                sprite: Josh_attack,
                 dano: 15, 
                 attack_speed: 0.5, 
                 frame_hit: 10,
                 empuje: 8
             }
         },
-        espadon_hierro: {
+        espadon_hierro: { // otra arma
             name: "Espadón Pesado",
-            ataque_ligero: { 
+            ataque_ligero: { // cuando presiona j
                 sprite: Sprite20, 
                 dano: 10, 
                 attack_speed: 1.0, 
                 frame_hit: 9,
                 empuje: 3
             },
-            ataque_pesado: { 
+            ataque_pesado: { // cuando presiona k
                 sprite: Sprite20, 
                 dano: 25, 
                 attack_speed: 0.2, 

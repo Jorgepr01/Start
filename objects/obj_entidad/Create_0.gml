@@ -39,7 +39,6 @@ choca_con_tile = function(_x, _y) {
 // Es exactamente igual que antes, pero usando nuestro nuevo escáner
 aplicar_movimiento = function() {
     
-    // --- COLISIÓN HORIZONTAL ---
     if (choca_con_tile(x + hsp, y)) {
         // Nos acercamos píxel por píxel hasta tocar el tile
         while (!choca_con_tile(x + sign(hsp), y)) {
@@ -49,7 +48,6 @@ aplicar_movimiento = function() {
     }
     x += hsp; 
 
-    // --- COLISIÓN VERTICAL ---
     if (choca_con_tile(x, y + vsp)) {
         // Nos acercamos píxel por píxel hasta tocar el tile
         while (!choca_con_tile(x, y + sign(vsp))) {
