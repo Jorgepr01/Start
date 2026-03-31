@@ -9,3 +9,5 @@ camara = view_camera[0];
 // Leemos el ancho y alto que le configuraste a esa cámara
 ancho_camara = camera_get_view_width(camara);
 alto_camara = camera_get_view_height(camara);
+
+
