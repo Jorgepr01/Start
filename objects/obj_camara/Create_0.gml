@@ -1,7 +1,7 @@
 /// @description Configuración de la Cámara
 
 objetivo = obj_jugador; // El objeto que vamos a seguir
-suavizado = 0.12;        // Qué tan rápido lo sigue (0.1 = 10% de la distancia por frame. 1 = instantáneo)
+suavizado = 0.12;
 
 // Obtenemos el ID de la cámara que activamos en la Room
 camara = view_camera[0];

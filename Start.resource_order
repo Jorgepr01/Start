@@ -1,9 +1,9 @@
 {
   "FolderOrderSettings":[
-    {"name":"temporales","order":14,"path":"folders/Objects/temporales.yy",},
     {"name":"managers","order":11,"path":"folders/Objects/managers.yy",},
     {"name":"padres","order":12,"path":"folders/Objects/padres.yy",},
     {"name":"personajes","order":13,"path":"folders/Objects/personajes.yy",},
+    {"name":"temporales","order":14,"path":"folders/Objects/temporales.yy",},
     {"name":"hitbox","order":3,"path":"folders/Sprites/hitbox.yy",},
     {"name":"Inicio","order":2,"path":"folders/Sprites/Inicio.yy",},
     {"name":"Josh","order":1,"path":"folders/Sprites/Josh.yy",},
@@ -19,6 +19,7 @@
     {"name":"obj_menu_principal","order":3,"path":"objects/obj_menu_principal/obj_menu_principal.yy",},
     {"name":"Inicio","order":2,"path":"rooms/Inicio/Inicio.yy",},
     {"name":"rm_init","order":1,"path":"rooms/rm_init/rm_init.yy",},
+    {"name":"Sequence1","order":1,"path":"sequences/Sequence1/Sequence1.yy",},
     {"name":"bgm_nivel_pruebas","order":3,"path":"sounds/bgm_nivel_pruebas/bgm_nivel_pruebas.yy",},
     {"name":"sound_dano","order":2,"path":"sounds/sound_dano/sound_dano.yy",},
     {"name":"sound_dash","order":1,"path":"sounds/sound_dash/sound_dash.yy",},

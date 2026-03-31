@@ -30,11 +30,11 @@ if (global.key_action) {
             }
             
             break;
-        case 1: // Opciones
+        case 1:
             show_debug_message("Abriendo menú de opciones...");
             show_message("Por programar opcciones :) \n Samuel tranqui estamos trabajando en eso")
             break;
-        case 2: // Salir
+        case 2:
             game_end();
             break;
     }

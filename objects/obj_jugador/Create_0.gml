@@ -11,7 +11,7 @@ velocidad_roll = 1.35; // velocidad del roll
 direccion_mirando = 270; // va abajo por defecto
 hitbox_creada = false;
 arma_equipada = global.weapons.Latigo
-// --- SISTEMA DE ARMAS Y COMBATE ---
+//SISTEMA DE ARMAS Y COMBATE 
 inventario_armas = [global.weapons.Latigo, global.weapons.espadon_hierro];
 indice_arma = 0;
 arma_equipada = inventario_armas[indice_arma];
