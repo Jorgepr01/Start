@@ -5,13 +5,14 @@ if (tiempo_flash > 0) {
 var _velocidad_actual = point_distance(0, 0, hsp, vsp);
 
 // 2. SISTEMA DE FÍSICAS VS INTELIGENCIA ARTIFICIAL
-if (_velocidad_actual > velocidad_caminar) {
+if (tiempo_aturdido > 0) {
+    // Si estamos aturdidos, reducimos el tiempo
+    tiempo_aturdido -= 1;
     
-    // Si la velocidad es alta, estamos en medio de un Knockback.
-    // Apagamos la IA temporalmente y aplicamos fricción.
-    hsp = lerp(hsp, 0, friccion);
-    vsp = lerp(vsp, 0, friccion);
-    
+    // Apagamos la IA temporalmente y aplicamos fricción al knockback
+    hsp = lerp(hsp, 0, friccion); // 
+    vsp = lerp(vsp, 0, friccion); // 
+
 } else {
 
     if (instance_exists(obj_jugador)) {

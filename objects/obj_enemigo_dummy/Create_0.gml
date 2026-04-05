@@ -4,6 +4,7 @@ hsp = 0;
 vsp = 0;
 friccion = 0.15;
 tiempo_flash = 0;
+tiempo_aturdido = 0
 enum ENEMY_STATE {
     IDLE, // quieto
     CHASE  // reconocido a enemigo (persergir)

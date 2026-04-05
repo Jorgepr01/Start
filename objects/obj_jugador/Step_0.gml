@@ -135,10 +135,8 @@ switch (estado) {
         }
 
         // 3. Crear Hitbox Dinámica
-        if (floor(image_index) == _datos.frame_hit && !hitbox_creada) {
-            //var _sonido = audio_play_sound(sound_attack, 1, false); encuentra uno mejor
-            // Le cambiamos el tono (pitch) al azar entre un 80% y un 120% de su velocidad original
-            //audio_sound_pitch(_sonido, random_range(0.8, 1));
+        if (image_index >= _datos.frame_hit && !hitbox_creada) {
+            // audio_play_sound(sound_ataque, 1, false, 0.8, 0, random_range(0.9, 1.1)); // NOTA: Falta el archivo 'sound_ataque' en el proyecto!
             var _xx = x + lengthdir_x(16, direccion_mirando);
             var _yy = y + lengthdir_y(16, direccion_mirando);
             var _hitbox = instance_create_layer(_xx, _yy, "Instances", obj_hitbox);
@@ -148,7 +146,11 @@ switch (estado) {
             
             _hitbox.fuerza_empuje = _datos.empuje;
             _hitbox.direccion_golpe = direccion_mirando;
+            _hitbox.max_objetivos = _datos.max_objetivos;
+            _hitbox.tiempo_aturdido = _datos.tiempo_aturdido;
             
+            
+            _hitbox.enemigos_golpeados = [];
             hitbox_creada = true;
         }
 
