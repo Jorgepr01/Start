@@ -137,10 +137,11 @@ switch (estado) {
         // 3. Crear Hitbox Dinámica
         if (image_index >= _datos.frame_hit && !hitbox_creada) {
             // audio_play_sound(sound_ataque, 1, false, 0.8, 0, random_range(0.9, 1.1)); // NOTA: Falta el archivo 'sound_ataque' en el proyecto!
-            var _xx = x + lengthdir_x(16, direccion_mirando);
-            var _yy = y + lengthdir_y(16, direccion_mirando);
+            var _xx = x + lengthdir_x(0, direccion_mirando);
+            var _yy = y + lengthdir_y(0, direccion_mirando);
             var _hitbox = instance_create_layer(_xx, _yy, "Instances", obj_hitbox);
             
+            _hitbox.creador = id;
             _hitbox.dano = _datos.dano;
             _hitbox.image_angle = direccion_mirando;
             
