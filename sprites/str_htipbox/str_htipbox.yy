@@ -23,7 +23,7 @@
   ],
   "name":"str_htipbox",
   "nineSlice":null,
-  "origin":9,
+  "origin":3,
   "parent":{
     "name":"hitbox",
     "path":"folders/Sprites/hitbox.yy",
@@ -75,7 +75,7 @@
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":2,
+    "xorigin":0,
     "yorigin":16,
   },
   "swatchColours":null,

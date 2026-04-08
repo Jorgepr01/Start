@@ -1,5 +1,5 @@
 event_inherited(); 
-hp = 40
+hp = 50
 hsp = 0;
 vsp = 0;
 friccion = 0.15;
@@ -11,4 +11,4 @@ enum ENEMY_STATE {
 }
 estado_actual = ENEMY_STATE.IDLE;
 radio_vision = 150;
-velocidad_caminar = 0.75;
+velocidad_caminar = 0.65;
