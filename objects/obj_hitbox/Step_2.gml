@@ -39,6 +39,7 @@ if (_cantidad_tocando > 0) {
         if (!_ya_golpeado) {
             array_push(enemigos_golpeados, _enemigo_actual.id);
             
+            // Pasa los datos al enemigo
             with (_enemigo_actual) {
                 hp -= other.dano;
                 tiempo_flash = 5;
@@ -47,8 +48,8 @@ if (_cantidad_tocando > 0) {
                 hsp = lengthdir_x(other.fuerza_empuje, other.direccion_golpe);
                 vsp = lengthdir_y(other.fuerza_empuje, other.direccion_golpe);
                 
-                var _sonido = audio_play_sound(sound_dano, 1, false);
-                if (_sonido != -1) audio_sound_pitch(_sonido, random_range(0.8, 1.2));
+                  var _sonido = audio_play_sound(sound_dano, 1, false);
+                  if (_sonido != -1) audio_sound_pitch(_sonido, random_range(0.8, 1.2));
                 show_debug_message("Golpeado: " + string(id) + " (Sano: " + string(tiempo_aturdido == other.tiempo_aturdido) + ")");
             }
         }

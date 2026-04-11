@@ -21,6 +21,7 @@ switch (estado) {
         if (global.key_dash) {
             estado = PLAYER_STATE.DASH;
             image_index = 0; 
+            global.buffer_dash = 0; // ¡Consumimos el ticket!
             var _snd_dash = audio_play_sound(sound_dash, 1, false);
             // Opcional: Le variamos el pitch para que cada voltereta suene ligeramente distinta
             audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
@@ -84,6 +85,7 @@ switch (estado) {
         if (global.key_dash) {
                 estado = PLAYER_STATE.DASH;
                 image_index = 0;
+                global.buffer_dash = 0; // ¡Consumimos el ticket!
                 var _snd_dash = audio_play_sound(sound_dash, 1, false);
                 // Opcional: Le variamos el pitch para que cada voltereta suene ligeramente distinta
                 audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
@@ -155,9 +157,27 @@ switch (estado) {
             hitbox_creada = true;
         }
 
-        // 4. Salir
+        // 4. Salir o Encadenar
         if (image_index >= image_number - 1) {
-            estado = PLAYER_STATE.IDLE;
+            if (global.key_dash) {
+                estado = PLAYER_STATE.DASH;
+                image_index = 0;
+                global.buffer_dash = 0;
+                var _snd_dash = audio_play_sound(sound_dash, 1, false);
+                audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
+            } else if (global.key_ataque_ligero) {
+                image_index = 0;
+                hitbox_creada = false;
+                tipo_ataque = "ligero";
+                global.buffer_ataque_ligero = 0;
+            } else if (global.key_ataque_pesado) {
+                image_index = 0;
+                hitbox_creada = false;
+                tipo_ataque = "pesado";
+                global.buffer_ataque_pesado = 0;
+            } else {
+                estado = PLAYER_STATE.IDLE;
+            }
         }
     break;
 
@@ -171,9 +191,29 @@ switch (estado) {
         hsp = lengthdir_x(velocidad_roll, direccion_mirando);
         vsp = lengthdir_y(velocidad_roll, direccion_mirando);
         
-        // 3. Salir del estado cuando la animación termine
+        // 3. Salir o Encadenar desde el Dash
         if (image_index >= image_number - 1) {
-            estado = PLAYER_STATE.IDLE;
+            if (global.key_ataque_ligero) {
+                estado = PLAYER_STATE.ATTACK;
+                image_index = 0;
+                hitbox_creada = false;
+                tipo_ataque = "ligero";
+                global.buffer_ataque_ligero = 0;
+            } else if (global.key_ataque_pesado) {
+                estado = PLAYER_STATE.ATTACK;
+                image_index = 0;
+                hitbox_creada = false;
+                tipo_ataque = "pesado";
+                global.buffer_ataque_pesado = 0;
+            } else if (global.key_dash) {
+                 estado = PLAYER_STATE.DASH;
+                 image_index = 0;
+                 global.buffer_dash = 0;
+                 var _snd_dash = audio_play_sound(sound_dash, 1, false);
+                 audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
+            } else {
+                estado = PLAYER_STATE.IDLE;
+            }
         }
     break;
 }
