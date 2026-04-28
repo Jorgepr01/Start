@@ -16,7 +16,7 @@ global.key_up_pressed   = keyboard_check_pressed(vk_up)   || keyboard_check_pres
 
 // Tecla para rodar (Input Buffer)
 if (global.buffer_dash > 0) global.buffer_dash--;
-if (keyboard_check_pressed(vk_shift) || keyboard_check_pressed(ord("C"))) global.buffer_dash = 12;
+if (keyboard_check_pressed(vk_shift) || keyboard_check_pressed(ord("C"))) global.buffer_dash = 60;
 global.key_dash = (global.buffer_dash > 0);
 // NOTA: Si luego añades un mando, sumarías aquí la lógica con gamepad_button_check()
 
