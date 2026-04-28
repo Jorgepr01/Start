@@ -1,6 +1,14 @@
 /// @description Máquina de Estados y Movimiento
 
-
+show_debug_message("vidad:" + string(hp))
+if (tiempo_aturdido > 0) {
+    
+    tiempo_aturdido--;
+    hsp = lerp(hsp, 0, 0.1);
+    vsp = lerp(vsp, 0, 0.1);
+    aplicar_movimiento();
+    exit; // ¡VITAL! Evita que el resto del código (inputs, ataques) se ejecute mientras recibe daño
+}
 
 switch (estado) {
     
@@ -146,7 +154,7 @@ switch (estado) {
             _hitbox.creador = id;
             _hitbox.dano = _datos.dano;
             _hitbox.image_angle = direccion_mirando;
-            
+            _hitbox.objetivo_colision = obj_enemigo_dummy;
             _hitbox.fuerza_empuje = _datos.empuje;
             _hitbox.direccion_golpe = direccion_mirando;
             _hitbox.max_objetivos = _datos.max_objetivos;

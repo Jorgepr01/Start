@@ -1,6 +1,6 @@
 // 1. Crear la lista y detectar colisiones ORDENADAS por distancia al origen de la hitbox
 var _lista_enemigos = ds_list_create();
-var _cantidad_tocando = instance_place_list(x, y, obj_enemigo_dummy, _lista_enemigos, true); // true = ORDENAR POR DISTANCIA
+var _cantidad_tocando = instance_place_list(x, y, objetivo_colision, _lista_enemigos, true);// true = ORDENAR POR DISTANCIA
 
 if (_cantidad_tocando > 0) {
     

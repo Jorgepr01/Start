@@ -2,7 +2,9 @@
 
 // IMPORTANTE: Heredar las variables y funciones del padre
 event_inherited(); 
-
+hp = 100; 
+tiempo_flash = 0;
+tiempo_aturdido = 0;
 // Ajustes específicos del jugador
 velocidad_base =1; 
 estado = PLAYER_STATE.IDLE;// estado inicial
@@ -18,3 +20,4 @@ arma_equipada = inventario_armas[indice_arma];
 
 tipo_ataque = "ligero";
 hitbox_creada = false;
+
