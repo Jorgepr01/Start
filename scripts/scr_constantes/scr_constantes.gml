@@ -28,6 +28,8 @@ function scr_constantes(){
         MOVE,
         ATTACK,
         DASH,
+        AIR,
+        AIR_ATTACK,
         HURT,
         DEAD
     }

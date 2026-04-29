@@ -4,6 +4,11 @@ hsp = 0;
 vsp = 0;
 velocidad_base = 2;
 
+
+gravedad = 0.4;       // Fuerza constante hacia abajo
+fuerza_salto = 4.8 ;   // Fuerza inicial negativa hacia arriba
+vsp_maxima = 8;
+
 // 1. EL ESCÁNER DE TILES
 choca_con_tile = function(_x, _y) {
     var _tilemap = layer_tilemap_get_id("Tiles_Colisiones");

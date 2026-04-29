@@ -1,155 +1,233 @@
 /// @description Máquina de Estados y Movimiento
+// 1. FÍSICA BASE Y ENTORNO
+var _en_el_suelo = choca_con_tile(x, y + 1);
 
-show_debug_message("vidad:" + string(hp))
-if (tiempo_aturdido > 0) {
-    
-    tiempo_aturdido--;
-    hsp = lerp(hsp, 0, 0.1);
-    vsp = lerp(vsp, 0, 0.1);
-    aplicar_movimiento();
-    exit; // ¡VITAL! Evita que el resto del código (inputs, ataques) se ejecute mientras recibe daño
+// Aplicar gravedad siempre que no estemos en un estado que la ignore (como el Dash)
+if (estado != PLAYER_STATE.DASH) {
+    vsp += gravedad;
+    if (vsp > vsp_maxima) vsp = vsp_maxima; // Límite de velocidad de caída
 }
 
+// Control de altura de salto (Game Feel: Si sueltas el botón, caes más rápido)
+if (!global.key_salto_mantenido && vsp < 0) {
+    vsp *= 0.4; 
+}
+
+// 2. CONTROL DE DAÑO Y ATURDIMIENTO
+// show_debug_message("vida:" + string(hp));
+if (tiempo_aturdido > 0) {
+    tiempo_aturdido--;
+    hsp = lerp(hsp, 0, 0.1);
+    vsp = lerp(vsp, 0, 0.1); // Opcional: podrías dejar que la gravedad actúe aquí también
+    aplicar_movimiento();
+    exit; // ¡VITAL! Evita que el resto del código se ejecute
+}
+
+// ==========================================
+// 3. MÁQUINA DE ESTADOS
+// ==========================================
 switch (estado) {
     
-    // ==========================================
+    // ------------------------------------------
     case PLAYER_STATE.IDLE: // ESTADO: INACTIVO
-    // ==========================================
-        hsp = 0;
-        vsp = 0;
-        var _dir_cuadrante = round(direccion_mirando / 90) mod 4;
-        switch (_dir_cuadrante) {
-            case 0: sprite_index = Josh_stop_derecha; break;   // 0 grados
-            case 1: sprite_index = Josh_stop_back; break;      // 90 grados 
-            case 2: sprite_index = Josh_stop_izquierda; break; // 180 grados
-            case 3: sprite_index = Josh_stop_up; break;        // 270 grados
+    // ------------------------------------------
+        hsp = lerp(hsp, 0, 0.2); // Fricción en el suelo para frenar suavemente
+        sprite_index = Josh_stop_derecha; // Usamos un solo sprite base, image_xscale lo voltea
         
+        // -- TRANSICIONES --
+        if (!_en_el_suelo) {
+            estado = PLAYER_STATE.AIR; // Si me caigo de una cornisa
         }
-        // Si presiono cualquier tecla de dirección, paso a moverme
-        if (global.key_dash) {
-            estado = PLAYER_STATE.DASH;
-            image_index = 0; 
-            global.buffer_dash = 0; // ¡Consumimos el ticket!
-            var _snd_dash = audio_play_sound(sound_dash, 1, false);
-            // Opcional: Le variamos el pitch para que cada voltereta suene ligeramente distinta
-            audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
+        else if (global.key_salto_presionado) {
+            vsp = -fuerza_salto;
+            estado = PLAYER_STATE.AIR;
         }
-        // Si presiono acción, ataco
-        // --- CAMBIO DE ARMA ---
-        else if (global.key_cambiar_arma) {
-            indice_arma = (indice_arma + 1) mod array_length(inventario_armas);
-            arma_equipada = inventario_armas[indice_arma];
-            show_debug_message("Arma actual: " + arma_equipada.name);
-        }
-        // --- ATAQUES ---
-        else if (global.key_ataque_ligero) {
-            estado = PLAYER_STATE.ATTACK;
-            image_index = 0;
-            hitbox_creada = false;
-            tipo_ataque = "ligero";
-        } 
-        else if (global.key_ataque_pesado) {
-            estado = PLAYER_STATE.ATTACK;
-            image_index = 0;
-            hitbox_creada = false;
-            tipo_ataque = "pesado";
-        }
-        else if (global.key_action) {
-            image_index = 0; 
-            estado = PLAYER_STATE.ATTACK;
-            hitbox_creada = false;
-        }
-        else if (global.key_right || global.key_left || global.key_up || global.key_down) {
+        else if (global.key_right || global.key_left) {
             estado = PLAYER_STATE.MOVE;
         }
-    break;
-
-    // ==========================================
-    case PLAYER_STATE.MOVE: // ESTADO: MOVIÉNDOSE
-    // ==========================================
-        var _dir_x = global.key_right - global.key_left;
-        var _dir_y = global.key_down - global.key_up;
-        
-        // Comprobar si nos estamos moviendo
-        if (_dir_x != 0 || _dir_y != 0) {
-            var _angulo = point_direction(0, 0, _dir_x, _dir_y);
-            direccion_mirando = _angulo;
-            // lengthdir descompone la velocidad en X y Y (evita que camine más rápido en diagonal)
-            // aqui para cambiar de sprite
-            if (_dir_x > 0) { sprite_index = Josh_step_derecha; }
-            else if (_dir_x < 0) { sprite_index = Josh_step_izquierda; }
-            else if (_dir_y > 0) { sprite_index = Josh_step_up; } 
-            else if (_dir_y < 0) { sprite_index = Josh_step_back; }
-            
-            // Movimiento
-            hsp = lengthdir_x(velocidad_base, _angulo);
-            vsp = lengthdir_y(velocidad_base, _angulo);
-            
-        } else {
-            // Si solté las teclas, vuelvo a inactivo
-            estado = PLAYER_STATE.IDLE;
+        else if (global.key_dash) {
+            estado = PLAYER_STATE.DASH;
+            image_index = 0; 
+            global.buffer_dash = 0; 
+            var _snd_dash = audio_play_sound(sound_dash, 1, false);
+            audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
         }
-        // Cambios de estados
-        if (global.key_dash) {
-                estado = PLAYER_STATE.DASH;
-                image_index = 0;
-                global.buffer_dash = 0; // ¡Consumimos el ticket!
-                var _snd_dash = audio_play_sound(sound_dash, 1, false);
-                // Opcional: Le variamos el pitch para que cada voltereta suene ligeramente distinta
-                audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
-                    
-            }
-        // --- CAMBIO DE ARMA ---
         else if (global.key_cambiar_arma) {
             indice_arma = (indice_arma + 1) mod array_length(inventario_armas);
             arma_equipada = inventario_armas[indice_arma];
-            show_debug_message("Arma actual: " + arma_equipada.name);
         }
-        // --- ATAQUES ---
-        else if (global.key_ataque_ligero) {
+        else if (global.key_ataque_ligero || global.key_ataque_pesado || global.key_action) {
             estado = PLAYER_STATE.ATTACK;
             image_index = 0;
             hitbox_creada = false;
-            tipo_ataque = "ligero";
-        } 
-        else if (global.key_ataque_pesado) {
-            estado = PLAYER_STATE.ATTACK;
-            image_index = 0;
-            hitbox_creada = false;
-            tipo_ataque = "pesado";
-        }
-        else if (global.key_action) {
-            image_index = 0; 
-            estado = PLAYER_STATE.ATTACK;
-            hitbox_creada = false;
+            tipo_ataque = global.key_ataque_ligero ? "ligero" : "pesado";
         }
     break;
 
-    // ==========================================
-    case PLAYER_STATE.ATTACK: // ESTADO: ATACANDO
-    // ==========================================
+    // ------------------------------------------
+    case PLAYER_STATE.MOVE: // ESTADO: MOVIÉNDOSE
+    // ------------------------------------------
+        var _dir_x = global.key_right - global.key_left;
         
-        // 1. Cargar datos según el botón presionado
-        var _datos;
-        if (tipo_ataque == "ligero") { _datos = arma_equipada.ataque_ligero; } 
-        else { _datos = arma_equipada.ataque_pesado; }
-        
-        // 2. Aplicar Sprite e Impulso
-        sprite_index = _datos.sprite;
-
-        if (image_index < image_number / 2) {
-            hsp = lengthdir_x(_datos.attack_speed, direccion_mirando);
-            vsp = lengthdir_y(_datos.attack_speed, direccion_mirando);
+        if (_dir_x != 0) {
+            hsp = _dir_x * velocidad_base;
+            image_xscale = _dir_x; // Voltea el sprite visualmente
+            direccion_mirando = (image_xscale == 1) ? 0 : 180; // 0 derecha, 180 izquierda
+            sprite_index = Josh_step_derecha; // Sprite base de correr
         } else {
-            hsp = 0; vsp = 0;
+            estado = PLAYER_STATE.IDLE;
+        }
+        
+        // -- TRANSICIONES --
+        if (!_en_el_suelo) {
+            estado = PLAYER_STATE.AIR;
+        }
+        else if (global.key_salto_presionado) {
+            vsp = -fuerza_salto;
+            estado = PLAYER_STATE.AIR;
+        }
+        else if (global.key_dash) {
+            estado = PLAYER_STATE.DASH;
+            image_index = 0;
+            global.buffer_dash = 0;
+            var _snd_dash = audio_play_sound(sound_dash, 1, false);
+            audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
+        }
+        else if (global.key_ataque_ligero || global.key_ataque_pesado || global.key_action) {
+            estado = PLAYER_STATE.ATTACK;
+            image_index = 0;
+            hitbox_creada = false;
+            tipo_ataque = global.key_ataque_ligero ? "ligero" : "pesado";
+        }
+    break;
+
+    // ------------------------------------------
+    case PLAYER_STATE.AIR: // ESTADO: EN EL AIRE (NUEVO)
+    // ------------------------------------------
+        var _dir_x = global.key_right - global.key_left;
+        
+        // Movilidad aérea (Air Control)
+        if (_dir_x != 0) {
+            hsp = _dir_x * velocidad_base;
+            image_xscale = _dir_x; 
+            direccion_mirando = (image_xscale == 1) ? 0 : 180;
+        } else {
+            hsp = lerp(hsp, 0, 0.05); // Menos fricción en el aire
+        }
+        // Animación dinámica de salto
+        if (vsp < 0) {
+            // sprite_index = Josh_jump_up; // Descomenta cuando tengas el sprite
+        } else {
+            // sprite_index = Josh_jump_fall; // Descomenta cuando tengas el sprite
+        }
+        // -- TRANSICIONES --
+        if (_en_el_suelo) {
+            if (_dir_x != 0) estado = PLAYER_STATE.MOVE;
+            else estado = PLAYER_STATE.IDLE;
+        }
+        else if (global.key_dash) { // Dash aéreo
+            estado = PLAYER_STATE.DASH;
+            image_index = 0;
+            global.buffer_dash = 0;
+            var _snd_dash = audio_play_sound(sound_dash, 1, false);
+            audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
+        }
+        else if (global.key_ataque_ligero || global.key_ataque_pesado || global.key_action) {
+            estado = PLAYER_STATE.AIR_ATTACK;
+            image_index = 0;
+            hitbox_creada = false;
+            // Puedes usar el mismo tipo de ataque o crear uno específico en tu inventario
+            tipo_ataque = global.key_ataque_ligero ? "ligero" : "pesado"; 
+        }
+    break;
+
+    // ------------------------------------------
+    case PLAYER_STATE.ATTACK: // ESTADO: ATACANDO
+    // ------------------------------------------
+        var _datos = (tipo_ataque == "ligero") ? arma_equipada.ataque_ligero : arma_equipada.ataque_pesado;
+        sprite_index = _datos.sprite;
+        // Impulso hacia adelante usando 2D (no lengthdir)
+        if (image_index < image_number / 2) {
+            var _direccion_impulso = (direccion_mirando == 0) ? 1 : -1; 
+            hsp = _datos.attack_speed * _direccion_impulso;
+        } else {
+            hsp = lerp(hsp, 0, 0.2); // Frena suavemente al terminar el tajo
         }
 
-        // 3. Crear Hitbox Dinámica
+        // Crear Hitbox Dinámica
         if (image_index >= _datos.frame_hit && !hitbox_creada) {
-            // audio_play_sound(sound_ataque, 1, false, 0.8, 0, random_range(0.9, 1.1)); // NOTA: Falta el archivo 'sound_ataque' en el proyecto!
-            var _xx = x + lengthdir_x(0, direccion_mirando);
-            var _yy = y + lengthdir_y(0, direccion_mirando);
-            var _hitbox = instance_create_layer(_xx, _yy, "Instances", obj_hitbox);
+            var _xx = x + ((direccion_mirando == 0) ? 10 : -10); // Desplaza la hitbox un poco hacia adelante
+            var _hitbox = instance_create_layer(_xx, y, "Instances", obj_hitbox);
+            _hitbox.creador = id;
+            _hitbox.dano = _datos.dano;
+            _hitbox.image_angle = direccion_mirando;
+            _hitbox.objetivo_colision = obj_enemigo_dummy;
+            _hitbox.fuerza_empuje = _datos.empuje;
+            _hitbox.direccion_golpe = direccion_mirando;
+            _hitbox.max_objetivos = _datos.max_objetivos;
+            _hitbox.tiempo_aturdido = _datos.tiempo_aturdido;
+            _hitbox.enemigos_golpeados = [];
+            hitbox_creada = true;
+        }
+
+        // Salir del ataque
+        if (image_index >= image_number - 1) {
+            if (global.key_dash) {
+                estado = PLAYER_STATE.DASH;
+                image_index = 0;
+                global.buffer_dash = 0;
+            } else if (global.key_ataque_ligero) {
+                image_index = 0; hitbox_creada = false; tipo_ataque = "ligero";
+            } else if (global.key_ataque_pesado) {
+                image_index = 0; hitbox_creada = false; tipo_ataque = "pesado";
+            } else {
+                estado = _en_el_suelo ? PLAYER_STATE.IDLE : PLAYER_STATE.AIR;
+            }
+        }
+    break;
+
+    // ------------------------------------------
+    case PLAYER_STATE.DASH: // ESTADO: RODANDO / DASH
+    // ------------------------------------------
+        sprite_index = Josh_rueda; 
+        // Forzamos el movimiento estrictamente horizontal, bloqueando la gravedad
+        vsp = 0; 
+        var _dir_dash = (direccion_mirando == 0) ? 1 : -1;
+        hsp = velocidad_roll * _dir_dash;
+        // Salir del Dash
+        if (image_index >= image_number - 1) {
+            if (global.key_ataque_ligero) {
+                estado = PLAYER_STATE.ATTACK; image_index = 0; hitbox_creada = false; tipo_ataque = "ligero";
+            } else if (global.key_ataque_pesado) {
+                estado = PLAYER_STATE.ATTACK; image_index = 0; hitbox_creada = false; tipo_ataque = "pesado";
+            } else if (global.key_dash) {
+                estado = PLAYER_STATE.DASH; image_index = 0; global.buffer_dash = 0;
+            } else {
+                estado = _en_el_suelo ? PLAYER_STATE.IDLE : PLAYER_STATE.AIR;
+            }
+        }
+    break;
+
+    // ------------------------------------------
+    case PLAYER_STATE.AIR_ATTACK: // ESTADO: ATACANDO EN EL AIRE
+    // ------------------------------------------
+        var _datos = (tipo_ataque == "ligero") ? arma_equipada.ataque_ligero : arma_equipada.ataque_pesado;
+        // IDEAL: Usar un sprite diferente para el ataque aéreo
+        sprite_index = _datos.sprite; // O un sprite específico como Josh_ataque_aire
+        // 1. GAME FEEL: "Hang Time" (Suspensión en el aire)
+        // Como la gravedad se suma al inicio del Step, aquí la contrarrestamos.
+        if (image_index < _datos.frame_hit) {
+            vsp = 0; // Congelamos la caída mientras prepara el corte
+        } else {
+            // Permitimos que empiece a caer suavemente de nuevo
+            vsp = min(vsp, 2); 
+        }
+        // Conservamos un poco de inercia horizontal (sin frenarlo en seco como en la tierra)
+        hsp = lerp(hsp, 0, 0.05); 
+        // 2. Crear Hitbox (Exactamente igual que en tierra)
+        if (image_index >= _datos.frame_hit && !hitbox_creada) {
+            var _xx = x + ((direccion_mirando == 0) ? 10 : -10);
+            var _hitbox = instance_create_layer(_xx, y, "Instances", obj_hitbox);
             
             _hitbox.creador = id;
             _hitbox.dano = _datos.dano;
@@ -159,72 +237,24 @@ switch (estado) {
             _hitbox.direccion_golpe = direccion_mirando;
             _hitbox.max_objetivos = _datos.max_objetivos;
             _hitbox.tiempo_aturdido = _datos.tiempo_aturdido;
-            
-            
             _hitbox.enemigos_golpeados = [];
             hitbox_creada = true;
         }
 
-        // 4. Salir o Encadenar
+        // 3. Salir del ataque aéreo
         if (image_index >= image_number - 1) {
-            if (global.key_dash) {
-                estado = PLAYER_STATE.DASH;
-                image_index = 0;
-                global.buffer_dash = 0;
-                var _snd_dash = audio_play_sound(sound_dash, 1, false);
-                audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
-            } else if (global.key_ataque_ligero) {
-                image_index = 0;
-                hitbox_creada = false;
-                tipo_ataque = "ligero";
-                global.buffer_ataque_ligero = 0;
-            } else if (global.key_ataque_pesado) {
-                image_index = 0;
-                hitbox_creada = false;
-                tipo_ataque = "pesado";
-                global.buffer_ataque_pesado = 0;
-            } else {
-                estado = PLAYER_STATE.IDLE;
-            }
+            estado = PLAYER_STATE.AIR;
         }
-    break;
-
-    // ==========================================
-    case PLAYER_STATE.DASH: // ESTADO: RODANDO
-    // ==========================================
-         
-        //usar if/else según 'direccion_mirando' para las otras direcciones
-        sprite_index = Josh_rueda; 
-        // Aplicar movimiento forzado a alta velocidad
-        hsp = lengthdir_x(velocidad_roll, direccion_mirando);
-        vsp = lengthdir_y(velocidad_roll, direccion_mirando);
         
-        // 3. Salir o Encadenar desde el Dash
-        if (image_index >= image_number - 1) {
-            if (global.key_ataque_ligero) {
-                estado = PLAYER_STATE.ATTACK;
-                image_index = 0;
-                hitbox_creada = false;
-                tipo_ataque = "ligero";
-                global.buffer_ataque_ligero = 0;
-            } else if (global.key_ataque_pesado) {
-                estado = PLAYER_STATE.ATTACK;
-                image_index = 0;
-                hitbox_creada = false;
-                tipo_ataque = "pesado";
-                global.buffer_ataque_pesado = 0;
-            } else if (global.key_dash) {
-                 estado = PLAYER_STATE.DASH;
-                 image_index = 0;
-                 global.buffer_dash = 0;
-                 var _snd_dash = audio_play_sound(sound_dash, 1, false);
-                 audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
-            } else {
-                estado = PLAYER_STATE.IDLE;
-            }
+
+        if (_en_el_suelo) {
+            // Se cancela el ataque aéreo y vuelve a estado normal (o puedes mandarlo a un estado de recuperación)
+            estado = PLAYER_STATE.IDLE;
         }
     break;
 }
 
-// APLICAR FÍSICA FINAL
+// ==========================================
+// 4. APLICAR FÍSICA FINAL
+// ==========================================
 aplicar_movimiento();

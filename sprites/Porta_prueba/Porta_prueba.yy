@@ -1,10 +1,10 @@
 {
   "$GMSprite":"v2",
   "%Name":"Porta_prueba",
-  "bboxMode":0,
+  "bboxMode":2,
   "bbox_bottom":25,
-  "bbox_left":2,
-  "bbox_right":16,
+  "bbox_left":3,
+  "bbox_right":15,
   "bbox_top":3,
   "collisionKind":1,
   "collisionTolerance":0,

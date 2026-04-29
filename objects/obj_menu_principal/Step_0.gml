@@ -23,7 +23,7 @@ if (global.key_action) {
         case 0: // Jugar
             
             if(room==Inicio){
-                room_goto(Room1);
+                room_goto(prueba);
             }else{
                 instance_activate_all();
                 instance_destroy();

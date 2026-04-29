@@ -5,12 +5,11 @@ event_inherited();
 hp = 100; 
 tiempo_flash = 0;
 tiempo_aturdido = 0;
-// Ajustes específicos del jugador
 velocidad_base =1; 
-estado = PLAYER_STATE.IDLE;// estado inicial
+estado = PLAYER_STATE.IDLE;
 
-velocidad_roll = 1.35; // velocidad del roll
-direccion_mirando = 270; // va abajo por defecto
+velocidad_roll = 1.35;
+direccion_mirando = 0;
 hitbox_creada = false;
 arma_equipada = global.weapons.Latigo
 //SISTEMA DE ARMAS Y COMBATE 

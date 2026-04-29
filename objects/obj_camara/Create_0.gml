@@ -1,8 +1,9 @@
 /// @description Configuración de la Cámara
 
 objetivo = obj_jugador; // El objeto que vamos a seguir
+estado = "seguir_jugador";     // Estados: "seguir_jugador", "fija", "cinematica"
 suavizado = 0.12;
-
+peso_mouse = 0.10;
 // Obtenemos el ID de la cámara que activamos en la Room
 camara = view_camera[0];
 

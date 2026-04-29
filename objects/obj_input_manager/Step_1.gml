@@ -3,7 +3,9 @@
 // Movimiento (Soporta flechas y WASD al mismo tiempo)
 global.key_right = keyboard_check(vk_right) || keyboard_check(ord("D"));
 global.key_left  = keyboard_check(vk_left)  || keyboard_check(ord("A"));
-global.key_up    = keyboard_check(vk_up)    || keyboard_check(ord("W"));
+global.key_salto_mantenido    = keyboard_check(vk_up)    || keyboard_check(ord("W"));
+global.key_salto_presionado = keyboard_check_pressed(vk_up) || keyboard_check_pressed(ord("W"))
+global.salto_soltada = keyboard_check_released(ord("Z"))
 global.key_down  = keyboard_check(vk_down)  || keyboard_check(ord("S"));
 
 // Acciones (Apretado una sola vez por frame)
