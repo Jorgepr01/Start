@@ -2,6 +2,14 @@
 // 1. FÍSICA BASE Y ENTORNO
 var _en_el_suelo = choca_con_tile(x, y + 1);
 
+if (hp <= 0 && estado != PLAYER_STATE.DEAD) {
+    estado = PLAYER_STATE.DEAD;
+    sprite_index = Josh; // Cambia a tu sprite de derrota
+    image_index = 0;            // Reinicia la animación desde el principio
+    hsp = 0;                    // Frenar en seco (o puedes dejar que ruede un poco)
+}
+
+
 // Aplicar gravedad siempre que no estemos en un estado que la ignore (como el Dash)
 if (estado != PLAYER_STATE.DASH) {
     vsp += gravedad;
@@ -257,6 +265,23 @@ switch (estado) {
             var _dir_x = global.key_right - global.key_left;
             estado = (_dir_x != 0) ? PLAYER_STATE.MOVE : PLAYER_STATE.IDLE;
             image_index = 0; // ¡Clave para que no se herede el frame de la animación del ataque!
+        }
+    break;
+    case PLAYER_STATE.DEAD: // ESTADO: MUERTO
+        
+        if (_en_el_suelo) {
+            hsp = lerp(hsp, 0, 0.1); 
+        }
+
+        // Comprobar si la animación de muerte ya llegó a su último frame
+        if (image_index + (sprite_get_speed(sprite_index) / game_get_speed(gamespeed_fps)) >= image_number) {
+            image_speed = 0; 
+            image_index = image_number - 1;
+            
+            // Activar una alarma para el Game Over
+            if (alarm[0] == -1) {
+                alarm[0] = game_get_speed(gamespeed_fps) * 2; // Espera 2 segundos antes de reiniciar
+            }
         }
     break;
 }
