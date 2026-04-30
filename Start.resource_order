@@ -40,6 +40,7 @@
     {"name":"obsta","order":1,"path":"sprites/obsta/obsta.yy",},
     {"name":"Porta_prueba","order":3,"path":"sprites/Porta_prueba/Porta_prueba.yy",},
     {"name":"Prota_a","order":5,"path":"sprites/Prota_a/Prota_a.yy",},
+    {"name":"spr_josh_mask","order":14,"path":"sprites/spr_josh_mask/spr_josh_mask.yy",},
     {"name":"Sprite20","order":1,"path":"sprites/Sprite20/Sprite20.yy",},
     {"name":"Sprite23","order":4,"path":"sprites/Sprite23/Sprite23.yy",},
     {"name":"Sprite4","order":3,"path":"sprites/Sprite4/Sprite4.yy",},

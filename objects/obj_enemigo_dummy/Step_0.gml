@@ -27,9 +27,7 @@ if (tiempo_aturdido > 0) {
     
         switch (estado_actual) {
             
-            // ==========================================
             case ENEMY_STATE.IDLE:
-            // ==========================================
                 hsp = lerp(hsp, 0, 0.2); // Fricción para quedarse quieto
                 
                 // Transición: Si Josh entra en su radio de visión
@@ -38,9 +36,7 @@ if (tiempo_aturdido > 0) {
                 }
             break;
             
-            // ==========================================
             case ENEMY_STATE.CHASE:
-            // ==========================================
                 // Transición: Volver a IDLE si se aleja mucho
                 if (_distancia_a_josh > radio_vision * 1.5) { 
                     estado_actual = ENEMY_STATE.IDLE;
@@ -65,10 +61,7 @@ if (tiempo_aturdido > 0) {
                     }
                 }
             break;
-
-            // ==========================================
             case ENEMY_STATE.ATTACK:
-            // ==========================================
                 // El enemigo se frena para atacar (solo en X)
                 hsp = lerp(hsp, 0, 0.2);
             
@@ -89,7 +82,6 @@ if (tiempo_aturdido > 0) {
                     
                     hitbox_creada = true;
                 }
-            
                 // Terminar el ataque
                 if (image_index + image_speed >= image_number) {
                     estado_actual = ENEMY_STATE.IDLE;

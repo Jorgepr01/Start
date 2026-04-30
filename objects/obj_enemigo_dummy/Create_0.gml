@@ -6,8 +6,8 @@ friccion = 0.15;
 tiempo_flash = 0;
 tiempo_aturdido = 0
 enum ENEMY_STATE {
-    IDLE, // quieto
-    CHASE,  // reconocido a enemigo (persergir)
+    IDLE,
+    CHASE, 
     ATTACK
 }
 estado_actual = ENEMY_STATE.IDLE;

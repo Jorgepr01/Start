@@ -106,6 +106,7 @@ switch (estado) {
     // ------------------------------------------
         var _dir_x = global.key_right - global.key_left;
         
+        sprite_index = Josh_stop_derecha;
         // Movilidad aérea (Air Control)
         if (_dir_x != 0) {
             hsp = _dir_x * velocidad_base;
@@ -189,10 +190,13 @@ switch (estado) {
     // ------------------------------------------
     case PLAYER_STATE.DASH: // ESTADO: RODANDO / DASH
     // ------------------------------------------
-        sprite_index = Josh_rueda; 
+        
         // Forzamos el movimiento estrictamente horizontal, bloqueando la gravedad
         vsp = 0; 
         var _dir_dash = (direccion_mirando == 0) ? 1 : -1;
+    
+        sprite_index = Josh_rueda; 
+        image_xscale = _dir_dash;
         hsp = velocidad_roll * _dir_dash;
         // Salir del Dash
         if (image_index >= image_number - 1) {
@@ -204,6 +208,7 @@ switch (estado) {
                 estado = PLAYER_STATE.DASH; image_index = 0; global.buffer_dash = 0;
             } else {
                 estado = _en_el_suelo ? PLAYER_STATE.IDLE : PLAYER_STATE.AIR;
+                image_index = 0;
             }
         }
     break;
@@ -244,17 +249,17 @@ switch (estado) {
         // 3. Salir del ataque aéreo
         if (image_index >= image_number - 1) {
             estado = PLAYER_STATE.AIR;
+            
         }
         
 
         if (_en_el_suelo) {
-            // Se cancela el ataque aéreo y vuelve a estado normal (o puedes mandarlo a un estado de recuperación)
-            estado = PLAYER_STATE.IDLE;
+            var _dir_x = global.key_right - global.key_left;
+            estado = (_dir_x != 0) ? PLAYER_STATE.MOVE : PLAYER_STATE.IDLE;
+            image_index = 0; // ¡Clave para que no se herede el frame de la animación del ataque!
         }
     break;
 }
 
-// ==========================================
 // 4. APLICAR FÍSICA FINAL
-// ==========================================
 aplicar_movimiento();

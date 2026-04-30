@@ -1,5 +1,5 @@
 /// @description Configurar Jugador
-
+mask_index = spr_josh_mask;
 // IMPORTANTE: Heredar las variables y funciones del padre
 event_inherited(); 
 hp = 100; 
