@@ -26,5 +26,15 @@ y = lerp(y, _y_destino, suavizado);
 x = clamp(x, 0, room_width - ancho_camara);
 y = clamp(y, 0, room_height - alto_camara);
 
-// Renderizado nítido
-camera_set_view_pos(camara, round(x), round(y));
+// --- SCREEN SHAKE ---
+var _shake_x = 0;
+var _shake_y = 0;
+if (shake_magnitude > 0) {
+    _shake_x = random_range(-shake_magnitude, shake_magnitude);
+    _shake_y = random_range(-shake_magnitude, shake_magnitude);
+    shake_magnitude -= shake_fade;
+    if (shake_magnitude < 0) shake_magnitude = 0;
+}
+
+// Renderizado nítido con el shake aplicado temporalmente a la vista (no afecta a x/y base)
+camera_set_view_pos(camara, round(x + _shake_x), round(y + _shake_y));

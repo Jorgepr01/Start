@@ -1,6 +1,23 @@
 /// @description Máquina de Estados y Movimiento
+
+// --- HIT STOP (Freeze Frames) ---
+if (hit_stop_timer > 0) {
+    hit_stop_timer--;
+    if (hit_stop_timer == 0) {
+        image_speed = velocidad_animacion_guardada;
+    } else {
+        if (image_speed != 0) {
+            velocidad_animacion_guardada = image_speed;
+            image_speed = 0;
+        }
+        exit; // Evita que se ejecute el resto del código
+    }
+}
+
 // 1. FÍSICA BASE Y ENTORNO
 var _en_el_suelo = choca_con_tile(x, y + 1);
+
+if (_en_el_suelo) saltos_realizados = 0;
 
 if (hp <= 0 && estado != PLAYER_STATE.DEAD) {
     estado = PLAYER_STATE.DEAD;
@@ -12,16 +29,22 @@ if (hp <= 0 && estado != PLAYER_STATE.DEAD) {
 
 // Aplicar gravedad siempre que no estemos en un estado que la ignore (como el Dash)
 if (estado != PLAYER_STATE.DASH) {
-    vsp += gravedad;
-    if (vsp > vsp_maxima) vsp = vsp_maxima; // Límite de velocidad de caída
+    if (!_en_el_suelo) {
+        vsp += gravedad;
+        if (vsp > vsp_maxima) vsp = vsp_maxima; // Límite de velocidad de caída
+    } else {
+        // Evitar que la gravedad se acumule mientras estamos parados en el suelo
+        if (vsp > 0) vsp = 0; 
+    }
 }
 
 // Control de altura de salto (Game Feel: Si sueltas el botón, caes más rápido)
 if (!global.key_salto_mantenido && vsp < 0) {
-    vsp *= 0.4; 
+    vsp *= 0.5; 
 }
 
 // 2. CONTROL DE DAÑO Y ATURDIMIENTO
+invencible = false; // Por defecto no somos invencibles
 // show_debug_message("vida:" + string(hp));
 if (tiempo_aturdido > 0) {
     tiempo_aturdido--;
@@ -29,6 +52,18 @@ if (tiempo_aturdido > 0) {
     vsp = lerp(vsp, 0, 0.1); // Opcional: podrías dejar que la gravedad actúe aquí también
     aplicar_movimiento();
     exit; // ¡VITAL! Evita que el resto del código se ejecute
+}
+
+// --- JUMP BUFFERING ---
+if (global.key_salto_presionado) {
+    jump_buffer = jump_buffer_max;
+}
+if (jump_buffer > 0) {
+    jump_buffer--;
+}
+
+if (coyote_time > 0) {
+    coyote_time--;
 }
 
 // ==========================================
@@ -45,10 +80,13 @@ switch (estado) {
         // -- TRANSICIONES --
         if (!_en_el_suelo) {
             estado = PLAYER_STATE.AIR; // Si me caigo de una cornisa
+            coyote_time = coyote_time_max;
         }
-        else if (global.key_salto_presionado) {
+        else if (jump_buffer > 0) {
             vsp = -fuerza_salto;
             estado = PLAYER_STATE.AIR;
+            saltos_realizados = 1;
+            jump_buffer = 0;
         }
         else if (global.key_right || global.key_left) {
             estado = PLAYER_STATE.MOVE;
@@ -89,10 +127,13 @@ switch (estado) {
         // -- TRANSICIONES --
         if (!_en_el_suelo) {
             estado = PLAYER_STATE.AIR;
+            coyote_time = coyote_time_max;
         }
-        else if (global.key_salto_presionado) {
+        else if (jump_buffer > 0) {
             vsp = -fuerza_salto;
             estado = PLAYER_STATE.AIR;
+            saltos_realizados = 1;
+            jump_buffer = 0;
         }
         else if (global.key_dash) {
             estado = PLAYER_STATE.DASH;
@@ -107,6 +148,7 @@ switch (estado) {
             hitbox_creada = false;
             tipo_ataque = global.key_ataque_ligero ? "ligero" : "pesado";
         }
+        
     break;
 
     // ------------------------------------------
@@ -130,9 +172,21 @@ switch (estado) {
             // sprite_index = Josh_jump_fall; // Descomenta cuando tengas el sprite
         }
         // -- TRANSICIONES --
-        if (_en_el_suelo) {
+        if (_en_el_suelo && vsp >= 0) {
             if (_dir_x != 0) estado = PLAYER_STATE.MOVE;
             else estado = PLAYER_STATE.IDLE;
+        }
+        else if (global.key_salto_presionado && (saltos_realizados < max_saltos || coyote_time > 0)) {
+            if (coyote_time > 0 && saltos_realizados == 0) {
+                vsp = -fuerza_salto;
+                saltos_realizados = 1;
+                coyote_time = 0;
+            } else {
+                vsp = (saltos_realizados == 0) ? -fuerza_salto : -fuerza_segundo_salto;
+                saltos_realizados++;
+                coyote_time = 0;
+            }
+            jump_buffer = 0;
         }
         else if (global.key_dash) { // Dash aéreo
             estado = PLAYER_STATE.DASH;
@@ -175,6 +229,7 @@ switch (estado) {
             _hitbox.direccion_golpe = direccion_mirando;
             _hitbox.max_objetivos = _datos.max_objetivos;
             _hitbox.tiempo_aturdido = _datos.tiempo_aturdido;
+            _hitbox.shake_magnitude = _datos.shake_magnitude;
             _hitbox.enemigos_golpeados = [];
             hitbox_creada = true;
         }
@@ -198,7 +253,7 @@ switch (estado) {
     // ------------------------------------------
     case PLAYER_STATE.DASH: // ESTADO: RODANDO / DASH
     // ------------------------------------------
-        
+        invencible = true;
         // Forzamos el movimiento estrictamente horizontal, bloqueando la gravedad
         vsp = 0; 
         var _dir_dash = (direccion_mirando == 0) ? 1 : -1;
@@ -250,6 +305,7 @@ switch (estado) {
             _hitbox.direccion_golpe = direccion_mirando;
             _hitbox.max_objetivos = _datos.max_objetivos;
             _hitbox.tiempo_aturdido = _datos.tiempo_aturdido;
+            _hitbox.shake_magnitude = _datos.shake_magnitude;
             _hitbox.enemigos_golpeados = [];
             hitbox_creada = true;
         }
@@ -285,6 +341,7 @@ switch (estado) {
         }
     break;
 }
-
+show_debug_message(estado)
 // 4. APLICAR FÍSICA FINAL
 aplicar_movimiento();
+

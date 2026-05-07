@@ -3,7 +3,7 @@
   "%Name":"Josh_stop_izquierda",
   "bboxMode":2,
   "bbox_bottom":26,
-  "bbox_left":9,
+  "bbox_left":11,
   "bbox_right":18,
   "bbox_top":7,
   "collisionKind":1,

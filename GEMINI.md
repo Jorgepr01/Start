@@ -1,45 +1,62 @@
-# Kenji RPG (Project "Start") - GEMINI.md
+# Kenji RPG - Project Context
 
 ## Project Overview
-**Kenji RPG** is a top-down Action RPG developed using **GameMaker (v2024+)**. The project features a structured approach to game management, a modular combat system, and tile-based physics.
+Kenji is a 2D **Metroidvania** Action developed using **GameMaker Studio 2** (v2024.1400.4.986+). The project follows a modular architecture with specialized manager objects and a state-driven player controller. One of its primary inspirations is **Katana Zero**.
 
-### Main Technologies & Architecture
-- **Engine:** GameMaker (IDE Version: 2024.1400.4.986)
+### Core Technologies
+- **Engine:** GameMaker Studio 2
 - **Language:** GML (GameMaker Language)
-- **Architecture:** Manager-based with a central initialization object (`obj_init`) and inheritance for entities.
-- **Key Systems:**
-    - **Initialization:** `obj_init` handles the global state, weapon database initialization, and manager spawning.
-    - **Input Management:** `obj_input_manager` provides a centralized way to handle keyboard inputs (WASD, Arrows, J/K for attacks, Shift/C for dash) via global variables.
-    - **Entity & Physics:** `obj_entidad` acts as a parent for all physical objects, providing tile-based collision logic using the `Tiles_Colisiones` layer.
-    - **Player Logic:** `obj_jugador` implements a state machine (`PLAYER_STATE`) for actions like `IDLE`, `MOVE`, `ATTACK`, and `DASH`.
-    - **Combat System:** A dynamic system where weapons are defined as structs in `global.weapons`. Each weapon has properties for light and heavy attacks, including damage, speed, and hitbox frames.
+- **Architecture:** Manager-based with Inheritance (`obj_entidad` as base for physics/collisions).
 
-## Building and Running
-Since this is a GameMaker project, it is primarily managed through the GameMaker IDE.
+## Architecture & Systems
 
-- **Run Project:** Press `F5` within the GameMaker IDE.
-- **Build Executable:** Use `Build > Create Executable` in the GameMaker menu.
-- **Config:** The project uses the "Default" configuration defined in `Start.yyp`.
+### 1. Initialization & Managers
+- **Initialization:** Handled by `obj_init` in the `rm_init` room. It sets up global data structures and spawns persistent managers.
+- **Global Managers:**
+  - `obj_game_manager`: Tracks global game state (`GAME_STATE` enum).
+  - `obj_input_manager`: Centralizes input reading (`global.key_right`, `global.key_jump`, etc.).
+  - `obj_camara`: Manages view following and screen effects.
+
+### 2. Entity & Physics System
+- **`obj_entidad`:** The base parent for all moving entities.
+  - **Tile-based Collisions:** Uses `choca_con_tile()` to check against the tilemap layer named `"Tiles_Colisiones"`.
+  - **Movement Logic:** Implements `aplicar_movimiento()` for pixel-perfect collision resolution.
+- **`obj_jugador`:** Inherits from `obj_entidad` and implements a comprehensive state machine.
+
+### 3. State Machine (Player)
+Managed via the `PLAYER_STATE` enum in `scr_constantes.gml`:
+- `IDLE`, `MOVE`, `ATTACK`, `DASH`, `AIR`, `AIR_ATTACK`, `HURT`, `DEAD`.
+
+### 4. Combat System
+- **Weapon Data:** Stored in `global.weapons` as a struct (e.g., `Latigo`, `espadon_hierro`).
+- **Hitboxes:** Dynamic spawning of `obj_hitbox` during attack frames. Hitboxes carry properties like damage, knockback, and stun time.
 
 ## Development Conventions
 
-### Resource Naming
-- **Objects:** Prefixed with `obj_` (e.g., `obj_jugador`, `obj_game_manager`).
-- **Scripts:** Prefixed with `scr_` (e.g., `scr_constantes`).
-- **Sprites:** Various naming (e.g., `Josh_step_up`, `Sprite20`, `str_htipbox`).
-- **Rooms:** Prefixed with `rm_` or named descriptively (e.g., `rm_init`, `Inicio`).
+### Coding Style
+- **Naming:** `obj_` for objects, `spr_` for sprites, `scr_` for scripts, `rm_` for rooms.
+- **Constants:** Macros and Enums are defined in `scripts/scr_constantes/scr_constantes.gml`.
+- **Global State:** Accessible via the `global` scope (e.g., `global.game_state`).
 
-### Global Constants & Enums
-All global constants, macros, and enums are defined in `scripts/scr_constantes/scr_constantes.gml`.
-- **GAME_STATE:** `PLAYING`, `PAUSED`, `MENU`, `CUTSCENE`.
-- **PLAYER_STATE:** `IDLE`, `MOVE`, `ATTACK`, `DASH`, `HURT`, `DEAD`.
-- **DIR:** `RIGHT`, `UP`, `LEFT`, `DOWN`.
+### Scene Setup
+- **Resolution:** 640x360 (`RESOLUTION_W`, `RESOLUTION_H`).
+- **Tile Size:** 32px (`TILE_SIZE`).
+- **Collision Layer:** Always ensure a tile layer named `"Tiles_Colisiones"` exists in rooms for physics to work.
 
-### Physics & Collisions
-- **Tile Size:** 32x32 pixels (defined as `TILE_SIZE` macro).
-- **Collision Layer:** The physics system expects a tile layer named `"Tiles_Colisiones"` for environmental collisions.
-- **Inheritance:** All entities requiring physics should inherit from `obj_entidad` and call `event_inherited()` in their Create event.
+## Building and Running
+- **IDE:** Open `Start.yyp` in GameMaker Studio 2.
+- **Run:** Press `F5` or the Play button in the IDE.
+- **Debug:** Press `F6` for the debugger.
+- **Testing:** New features should be tested in the `prueba` room.
 
-### Combat System
-- Weapons are stored in `global.weapons` as structs.
-- When adding a new weapon, ensure it has `ataque_ligero` and `ataque_pesado` definitions with `sprite`, `dano`, `attack_speed`, `frame_hit`, and `empuje`.
+## Key Files
+- `Start.yyp`: Project definition file.
+- `scripts/scr_constantes/scr_constantes.gml`: Central hub for game-wide settings.
+- `objects/obj_init/Create_0.gml`: Game entry point and data initialization.
+- `objects/obj_entidad/Create_0.gml`: Core physics and collision logic.
+- `objects/obj_jugador/Step_0.gml`: Primary player logic and state machine.
+
+## 5. Communication
+- `Role`: Act as a Senior Developer
+- Always reply in English. Use clear, professional, and technical language suitable for a B1 level.
+

@@ -28,6 +28,9 @@ if (_cantidad_tocando > 0) {
         
         var _enemigo_actual = _objetivos_finales[i];
         
+        // --- FILTRO DE INVENCIBILIDAD ---
+        if (_enemigo_actual.invencible) continue;
+        
         var _ya_golpeado = false;
         for (var j = 0; j < array_length(enemigos_golpeados); j++) {
             if (enemigos_golpeados[j] == _enemigo_actual.id) {
@@ -44,6 +47,17 @@ if (_cantidad_tocando > 0) {
                 hp -= other.dano;
                 tiempo_flash = 5;
                 tiempo_aturdido = other.tiempo_aturdido;
+                
+                // --- HIT STOP ---
+                hit_stop_timer = 5; // Frames de congelación para el enemigo
+                if (instance_exists(other.creador)) {
+                    other.creador.hit_stop_timer = 5; // Frames de congelación para el atacante
+                }
+                
+                // --- SCREEN SHAKE ---
+                if (instance_exists(obj_camara)) {
+                    obj_camara.shake_magnitude = other.shake_magnitude; // Shake específico del arma o ataque
+                }
                 
                 hsp = lengthdir_x(other.fuerza_empuje, other.direccion_golpe);
                 vsp = lengthdir_y(other.fuerza_empuje, other.direccion_golpe);

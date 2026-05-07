@@ -3,10 +3,14 @@
 hsp = 0;
 vsp = 0;
 velocidad_base = 2;
+invencible = false;
+hit_stop_timer = 0;
+velocidad_animacion_guardada = 1;
 
 
 gravedad = 0.4;       // Fuerza constante hacia abajo
-fuerza_salto = 4.8 ;   // Fuerza inicial negativa hacia arriba
+fuerza_salto = 5.8;   // Fuerza inicial negativa hacia arriba
+fuerza_segundo_salto = 4.5; // Menor que fuerza_salto (4.8)
 vsp_maxima = 8;
 
 // 1. EL ESCÁNER DE TILES
@@ -33,7 +37,6 @@ choca_con_tile = function(_x, _y) {
 aplicar_movimiento = function() {
     
     if (choca_con_tile(x + hsp, y)) {
-        // Nos acercamos píxel por píxel hasta tocar el tile
         while (!choca_con_tile(x + sign(hsp), y)) {
             x += sign(hsp);
         }

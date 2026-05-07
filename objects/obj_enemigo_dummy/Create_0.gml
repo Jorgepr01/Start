@@ -7,11 +7,11 @@ tiempo_flash = 0;
 tiempo_aturdido = 0
 enum ENEMY_STATE {
     IDLE,
-    CHASE, 
-    ATTACK
-}
-estado_actual = ENEMY_STATE.IDLE;
+    CHASE,
+    ATTACK,
+    DAZED
+}estado_actual = ENEMY_STATE.IDLE;
 radio_vision = 150;
-velocidad_caminar = 0.65;
-distancia_ataque = 15;
+velocidad_caminar = 0.85;
+distancia_ataque = 20;
 hitbox_creada = false;

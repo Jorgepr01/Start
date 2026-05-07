@@ -11,4 +11,8 @@ camara = view_camera[0];
 ancho_camara = camera_get_view_width(camara);
 alto_camara = camera_get_view_height(camara);
 
+// Variables para Screen Shake
+shake_magnitude = 0;
+shake_fade = 0.25;
+
 

@@ -2,7 +2,7 @@
   "$GMSprite":"v2",
   "%Name":"Josh_rueda",
   "bboxMode":2,
-  "bbox_bottom":27,
+  "bbox_bottom":26,
   "bbox_left":13,
   "bbox_right":19,
   "bbox_top":8,
