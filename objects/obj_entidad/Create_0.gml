@@ -15,7 +15,7 @@ vsp_maxima = 8;
 
 // 1. EL ESCÁNER DE TILES
 choca_con_tile = function(_x, _y) {
-    var _tilemap = layer_tilemap_get_id("Tiles_Colisiones");
+    var _tilemap = layer_tilemap_get_id("Tiles_Escaleras");
     if (_tilemap == -1) return false; 
     var _x_real = x;
     var _y_real = y;
@@ -35,12 +35,28 @@ choca_con_tile = function(_x, _y) {
 
 // 2. EL MOTOR DE MOVIMIENTO
 aplicar_movimiento = function() {
-    
+    var _escalon = 4;
+	
+	
     if (choca_con_tile(x + hsp, y)) {
-        while (!choca_con_tile(x + sign(hsp), y)) {
-            x += sign(hsp);
+		var _pudo_subir = false;
+        for (var i = 1; i <= _escalon; i++) {
+			
+            if (!choca_con_tile(x + hsp, y - i)) {
+                y -= i;
+                _pudo_subir = true;
+                break;
+            }
         }
-        hsp = 0; 
+
+        if (!_pudo_subir) {
+			if (hsp != 0) {
+            while (!choca_con_tile(x + sign(hsp), y)) {
+                x += sign(hsp);
+            }
+			}
+            hsp = 0; 
+        }
     }
     x += hsp; 
 

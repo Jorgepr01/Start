@@ -56,7 +56,6 @@
     {"id":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
     {"id":{"name":"scr_constantes","path":"scripts/scr_constantes/scr_constantes.yy",},},
-    {"id":{"name":"Sequence1","path":"sequences/Sequence1/Sequence1.yy",},},
     {"id":{"name":"bgm_nivel_pruebas","path":"sounds/bgm_nivel_pruebas/bgm_nivel_pruebas.yy",},},
     {"id":{"name":"sound_dano","path":"sounds/sound_dano/sound_dano.yy",},},
     {"id":{"name":"sound_dash","path":"sounds/sound_dash/sound_dash.yy",},},

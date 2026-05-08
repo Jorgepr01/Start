@@ -23,7 +23,6 @@
     {"name":"Inicio","order":2,"path":"rooms/Inicio/Inicio.yy",},
     {"name":"prueba","order":3,"path":"rooms/prueba/prueba.yy",},
     {"name":"rm_init","order":1,"path":"rooms/rm_init/rm_init.yy",},
-    {"name":"Sequence1","order":1,"path":"sequences/Sequence1/Sequence1.yy",},
     {"name":"bgm_nivel_pruebas","order":3,"path":"sounds/bgm_nivel_pruebas/bgm_nivel_pruebas.yy",},
     {"name":"sound_dano","order":2,"path":"sounds/sound_dano/sound_dano.yy",},
     {"name":"sound_dash","order":1,"path":"sounds/sound_dash/sound_dash.yy",},
