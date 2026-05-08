@@ -36,7 +36,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.4.986",
+    "IDEVersion":"2024.14.3.217",
   },
   "name":"Start",
   "resources":[
@@ -71,6 +71,10 @@
     {"id":{"name":"Josh_stop_izquierda","path":"sprites/Josh_stop_izquierda/Josh_stop_izquierda.yy",},},
     {"id":{"name":"Josh_stop_up","path":"sprites/Josh_stop_up/Josh_stop_up.yy",},},
     {"id":{"name":"Josh","path":"sprites/Josh/Josh.yy",},},
+    {"id":{"name":"Kenji_golpe","path":"sprites/Kenji_golpe/Kenji_golpe.yy",},},
+    {"id":{"name":"Kenji_shuriken","path":"sprites/Kenji_shuriken/Kenji_shuriken.yy",},},
+    {"id":{"name":"Kenji_walk","path":"sprites/Kenji_walk/Kenji_walk.yy",},},
+    {"id":{"name":"Kenji","path":"sprites/Kenji/Kenji.yy",},},
     {"id":{"name":"obsta","path":"sprites/obsta/obsta.yy",},},
     {"id":{"name":"Porta_prueba","path":"sprites/Porta_prueba/Porta_prueba.yy",},},
     {"id":{"name":"Prota_a","path":"sprites/Prota_a/Prota_a.yy",},},
