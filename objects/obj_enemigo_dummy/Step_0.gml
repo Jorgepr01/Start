@@ -54,7 +54,7 @@ if (instance_exists(obj_jugador)) {
 
         case ENEMY_STATE.IDLE:
                 hsp = lerp(hsp, 0, 0.2); // Fricción para quedarse quieto
-                
+                sprite_index=Josh
                 // Transición: Si Josh entra en su radio de visión
                 if (_distancia_a_josh <= radio_vision) {
                     estado_actual = ENEMY_STATE.CHASE;
@@ -65,37 +65,31 @@ if (instance_exists(obj_jugador)) {
                 // Transición: Volver a IDLE si se aleja mucho
                 if (_distancia_a_josh > radio_vision * 1.5) { 
                     estado_actual = ENEMY_STATE.IDLE;
+                    sprite_index=Josh
                 } 
                 // Transición: Atacar si está lo suficientemente cerca
                 else if (_distancia_a_josh <= distancia_ataque) { 
                     estado_actual = ENEMY_STATE.ATTACK;
                     image_index = 0; 
                     hitbox_creada = false; 
-                    show_debug_message("atacaaar")
+                    
                 }
                 else {
-                    // COMPORTAMIENTO 2D LATERAL:
-                    // sign() devuelve 1 si está a la derecha, -1 si está a la izquierda
+                    sprite_index=Josh_step_derecha
                     var _direccion_x = sign(obj_jugador.x - x);
-                    
-                    // Solo modificamos hsp. ¡Dejamos vsp en paz para la gravedad!
                     hsp = _direccion_x * velocidad_caminar;
-                    
-                    
-                    // Voltear el sprite visualmente
                     if (_direccion_x != 0) {
                         image_xscale = _direccion_x;
                     }
-                    show_debug_message(image_xscale)
                 }
             break;
             case ENEMY_STATE.ATTACK:
                 // El enemigo se frena para atacar (solo en X)
                 hsp = lerp(hsp, 0, 0.2);
+                sprite_index=Josh_attack
                 
                 // Crear Hitbox en el frame específico de la animación
-                if (image_index >= 1 && !hitbox_creada) {
-                    show_debug_message("Crear hitboxs")
+                if (image_index >= 8 && !hitbox_creada) {
                     var _hitbox = instance_create_layer(x, y, "Instances", obj_hitbox);
                     
                     _hitbox.creador = id;
@@ -105,18 +99,15 @@ if (instance_exists(obj_jugador)) {
                     _hitbox.tiempo_aturdido = 15;
                     _hitbox.fuerza_empuje = 7;
                     _hitbox.shake_magnitude = 3;
-                    show_debug_message(image_xscale)
                     // El empuje debe ser lateral (0 o 180), no en ángulo hacia el jugador
                     _hitbox.direccion_golpe = (image_xscale == 1) ? 0 : 180;
                     _hitbox.enemigos_golpeados = [];
-                    
                     hitbox_creada = true;
                 }
                 // Terminar el ataque
                 if (image_index + image_speed >= image_number) {
                     estado_actual = ENEMY_STATE.IDLE;
                 }
-                show_debug_message("golpeado")
             break;
         }
     } else {

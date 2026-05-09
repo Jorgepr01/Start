@@ -33,16 +33,29 @@ choca_con_tile = function(_x, _y) {
     return _colision;
 };
 
+choca_con_entorno = function(_x, _y) {
+    var _choca_tile = choca_con_tile(_x, _y);
+    var _x_real = x;
+    var _y_real = y;
+    x = _x; y = _y;
+    var _choca_rampa = place_meeting(x, y, obj_rampa) || place_meeting(x, y, obj_rampa_invertida);
+    x = _x_real; y = _y_real;
+    return (_choca_tile || _choca_rampa);
+};
+
+
+
+
 // 2. EL MOTOR DE MOVIMIENTO
 aplicar_movimiento = function() {
-    var _escalon = 4;
+    var _escalon = 5;
+	var _estaba_en_suelo = choca_con_entorno(x, y + 1);
 	
-	
-    if (choca_con_tile(x + hsp, y)) {
-		var _pudo_subir = false;
+    if (choca_con_entorno(x + hsp, y)) {
+        var _pudo_subir = false;
+        
         for (var i = 1; i <= _escalon; i++) {
-			
-            if (!choca_con_tile(x + hsp, y - i)) {
+            if (!choca_con_entorno(x + hsp, y - i)) {
                 y -= i;
                 _pudo_subir = true;
                 break;
@@ -50,22 +63,33 @@ aplicar_movimiento = function() {
         }
 
         if (!_pudo_subir) {
-			if (hsp != 0) {
-            while (!choca_con_tile(x + sign(hsp), y)) {
-                x += sign(hsp);
+            if (hsp != 0) { // Protección anti-cuelgues
+                while (!choca_con_entorno(x + sign(hsp), y)) {
+                    x += sign(hsp);
+                }
             }
-			}
             hsp = 0; 
         }
     }
-    x += hsp; 
+    x += hsp;
 
-    if (choca_con_tile(x, y + vsp)) {
+    // 2.2 SNAP DOWN (Para bajar rampas/escaleras sin despegarse del suelo)
+    if (_estaba_en_suelo && !choca_con_entorno(x, y + 1) && vsp >= 0) {
+        for (var i = 1; i <= _escalon; i++) {
+            if (choca_con_entorno(x, y + i + 1)) {
+                y += i;
+                break;
+            }
+        }
+    }
+
+    if (choca_con_entorno(x, y + vsp)) {
         // Nos acercamos píxel por píxel hasta tocar el tile
-        while (!choca_con_tile(x, y + sign(vsp))) {
+        while (!choca_con_entorno(x, y + sign(vsp))) {
             y += sign(vsp);
         }
         vsp = 0; 
     }
     y += vsp; 
 };
+

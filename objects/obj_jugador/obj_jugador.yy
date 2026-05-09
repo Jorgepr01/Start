@@ -35,8 +35,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"Josh",
-    "path":"sprites/Josh/Josh.yy",
+    "name":"spr_Kenji",
+    "path":"sprites/spr_Kenji/spr_Kenji.yy",
   },
   "spriteMaskId":null,
   "visible":true,

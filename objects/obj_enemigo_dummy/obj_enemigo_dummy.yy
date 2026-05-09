@@ -35,8 +35,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"Prota_a",
-    "path":"sprites/Prota_a/Prota_a.yy",
+    "name":"Josh",
+    "path":"sprites/Josh/Josh.yy",
   },
   "spriteMaskId":null,
   "visible":true,

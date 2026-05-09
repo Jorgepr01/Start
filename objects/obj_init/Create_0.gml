@@ -4,51 +4,25 @@ global.current_bgm = noone;
 
 // Base de datos (Structs)
 global.weapons = {
-    Latigo: {
-        name: "Latigo",
-        ataque_ligero: { 
-            sprite: Josh_attack,
-            dano: 5, 
-            attack_speed: 1, 
-            frame_hit: 8 ,
-            empuje: 3,
-            max_objetivos: 1,
-            tiempo_aturdido: 20,
-            shake_magnitude: 2
-        },
-        ataque_pesado: { 
-            sprite: Josh_attack,
-            dano: 15, 
-            attack_speed: 0.5, 
-            frame_hit: 10,
-            empuje: 6,
-            max_objetivos: 99,
-            tiempo_aturdido: 40,
-            shake_magnitude: 5
-        }
+    Katana: {
+        name: "Katana",
+        ataques_ligeros: [
+            { sprite: spr_Kenji_golpe_ligero_1, dano: 8, attack_speed: 1, frame_hit: 5 , empuje: 4, max_objetivos: 1, tiempo_aturdido: 20, shake_magnitude: 2 },
+            { sprite: spr_Kenji_golpe_ligero_2, dano: 10, attack_speed: 1.1, frame_hit: 5, empuje: 5, max_objetivos: 1, tiempo_aturdido: 20, shake_magnitude: 3 },
+            { sprite: spr_Kenji_golpe_ligero_3, dano: 15, attack_speed: 1.2, frame_hit: 5, empuje: 10, max_objetivos: 2, tiempo_aturdido: 35, shake_magnitude: 6 }
+        ],
+        ataques_pesados: [
+            { sprite: spr_Kenji_golpe_pesado_1, dano: 15, attack_speed: 0.8, frame_hit: 5, empuje: 12, max_objetivos: 99, tiempo_aturdido: 50, shake_magnitude: 8 },
+            { sprite: spr_Kenji_shuriken, dano: 20, attack_speed: 0.8, frame_hit: 5, empuje: 12, max_objetivos: 99, tiempo_aturdido: 50, shake_magnitude: 8 }
+        ]
     },
-    espadon_hierro: { // otra arma
-        name: "Espadón Pesado",
-        ataque_ligero: { // cuando presiona j
-            sprite: Sprite20, 
-            dano: 7, 
-            attack_speed: 1.0, 
-            frame_hit: 9,
-            empuje: 3,
-            max_objetivos: 2,
-            tiempo_aturdido: 30,
-            shake_magnitude: 4
-        },
-        ataque_pesado: { // cuando presiona k
-            sprite: Sprite20, 
-            dano: 20, 
-            attack_speed: 0.2, 
-            frame_hit: 12,
-            empuje: 8,
-            max_objetivos: 99,
-            tiempo_aturdido: 60,
-            shake_magnitude: 8
-        }
+    Shuriken: { 
+        name: "Shuriken",
+        ataques_ligeros: [
+            { sprite: spr_Kenji_shuriken, dano: 5, attack_speed: 2.0, frame_hit: 4, empuje: 1, max_objetivos: 1, tiempo_aturdido: 5, shake_magnitude: 1 },
+            { sprite: spr_Kenji_shuriken, dano: 5, attack_speed: 2.0, frame_hit: 4, empuje: 1, max_objetivos: 1, tiempo_aturdido: 5, shake_magnitude: 1 }
+        ],
+        ataques_pesados: []
     }
 }
 

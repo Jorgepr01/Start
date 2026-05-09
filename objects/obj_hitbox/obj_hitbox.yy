@@ -32,8 +32,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"str_htipbox",
-    "path":"sprites/str_htipbox/str_htipbox.yy",
+    "name":"spr_htipbox",
+    "path":"sprites/spr_htipbox/spr_htipbox.yy",
   },
   "spriteMaskId":null,
   "visible":true,

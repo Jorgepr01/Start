@@ -15,13 +15,13 @@ if (hit_stop_timer > 0) {
 }
 
 // 1. FÍSICA BASE Y ENTORNO
-var _en_el_suelo = choca_con_tile(x, y + 1);
+var _en_el_suelo = choca_con_entorno(x, y + 1);
 
 if (_en_el_suelo) saltos_realizados = 0;
 
 if (hp <= 0 && estado != PLAYER_STATE.DEAD) {
     estado = PLAYER_STATE.DEAD;
-    sprite_index = Josh; // Cambia a tu sprite de derrota
+    sprite_index = spr_Kenji; // Cambia a tu sprite de derrota
     image_index = 0;            // Reinicia la animación desde el principio
     hsp = 0;                    // Frenar en seco (o puedes dejar que ruede un poco)
 }
@@ -66,16 +66,25 @@ if (coyote_time > 0) {
     coyote_time--;
 }
 
-// ==========================================
-// 3. MÁQUINA DE ESTADOS
-// ==========================================
+if (dash_cooldown > 0) {
+    dash_cooldown--;
+}
+
+// --- GESTIÓN DE COMBOS ---
+if (combo_timer > 0) {
+    combo_timer--;
+    if (combo_timer <= 0) {
+        combo_step = 0; // Se agota el tiempo, el combo se reinicia
+    }
+}
+
 switch (estado) {
     
     // ------------------------------------------
     case PLAYER_STATE.IDLE: // ESTADO: INACTIVO
     // ------------------------------------------
         hsp = lerp(hsp, 0, 0.2); // Fricción en el suelo para frenar suavemente
-        sprite_index = Josh_stop_derecha; // Usamos un solo sprite base, image_xscale lo voltea
+        sprite_index = spr_Kenji; // Usamos un solo sprite base, image_xscale lo voltea
         
         // -- TRANSICIONES --
         if (!_en_el_suelo) {
@@ -91,7 +100,7 @@ switch (estado) {
         else if (global.key_right || global.key_left) {
             estado = PLAYER_STATE.MOVE;
         }
-        else if (global.key_dash) {
+        else if (global.key_dash && dash_cooldown <= 0) {
             estado = PLAYER_STATE.DASH;
             image_index = 0; 
             global.buffer_dash = 0; 
@@ -102,11 +111,8 @@ switch (estado) {
             indice_arma = (indice_arma + 1) mod array_length(inventario_armas);
             arma_equipada = inventario_armas[indice_arma];
         }
-        else if (global.key_ataque_ligero || global.key_ataque_pesado || global.key_action) {
-            estado = PLAYER_STATE.ATTACK;
-            image_index = 0;
-            hitbox_creada = false;
-            tipo_ataque = global.key_ataque_ligero ? "ligero" : "pesado";
+        else {
+            intentar_ataque();
         }
     break;
 
@@ -119,7 +125,7 @@ switch (estado) {
             hsp = _dir_x * velocidad_base;
             image_xscale = _dir_x; // Voltea el sprite visualmente
             direccion_mirando = (image_xscale == 1) ? 0 : 180; // 0 derecha, 180 izquierda
-            sprite_index = Josh_step_derecha; // Sprite base de correr
+            sprite_index = spr_Kenji_walk_1; // Sprite base de correr
         } else {
             estado = PLAYER_STATE.IDLE;
         }
@@ -135,18 +141,15 @@ switch (estado) {
             saltos_realizados = 1;
             jump_buffer = 0;
         }
-        else if (global.key_dash) {
+        else if (global.key_dash && dash_cooldown <= 0) {
             estado = PLAYER_STATE.DASH;
             image_index = 0;
             global.buffer_dash = 0;
             var _snd_dash = audio_play_sound(sound_dash, 1, false);
             audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
         }
-        else if (global.key_ataque_ligero || global.key_ataque_pesado || global.key_action) {
-            estado = PLAYER_STATE.ATTACK;
-            image_index = 0;
-            hitbox_creada = false;
-            tipo_ataque = global.key_ataque_ligero ? "ligero" : "pesado";
+        else {
+            intentar_ataque();
         }
         
     break;
@@ -156,7 +159,7 @@ switch (estado) {
     // ------------------------------------------
         var _dir_x = global.key_right - global.key_left;
         
-        sprite_index = Josh_stop_derecha;
+        sprite_index = spr_Kenji;
         // Movilidad aérea (Air Control)
         if (_dir_x != 0) {
             hsp = _dir_x * velocidad_base;
@@ -188,27 +191,30 @@ switch (estado) {
             }
             jump_buffer = 0;
         }
-        else if (global.key_dash) { // Dash aéreo
+        else if (global.key_dash && dash_cooldown <= 0) { // Dash aéreo
             estado = PLAYER_STATE.DASH;
             image_index = 0;
             global.buffer_dash = 0;
             var _snd_dash = audio_play_sound(sound_dash, 1, false);
             audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
         }
-        else if (global.key_ataque_ligero || global.key_ataque_pesado || global.key_action) {
-            estado = PLAYER_STATE.AIR_ATTACK;
-            image_index = 0;
-            hitbox_creada = false;
-            // Puedes usar el mismo tipo de ataque o crear uno específico en tu inventario
-            tipo_ataque = global.key_ataque_ligero ? "ligero" : "pesado"; 
+        else {
+            intentar_ataque();
         }
     break;
 
     // ------------------------------------------
     case PLAYER_STATE.ATTACK: // ESTADO: ATACANDO
     // ------------------------------------------
-        var _datos = (tipo_ataque == "ligero") ? arma_equipada.ataque_ligero : arma_equipada.ataque_pesado;
+        // 1. Obtener los datos del golpe actual según el paso del combo
+        var _array_ataques = (tipo_ataque == "ligero") ? arma_equipada.ataques_ligeros : arma_equipada.ataques_pesados;
+        
+        // Proteccion por si cambiamos de arma y el combo_step es mayor al nuevo array
+        if (combo_step >= array_length(_array_ataques)) combo_step = 0;
+        
+        var _datos = _array_ataques[combo_step];
         sprite_index = _datos.sprite;
+        
         // Impulso hacia adelante usando 2D (no lengthdir)
         if (image_index < image_number / 2) {
             var _direccion_impulso = (direccion_mirando == 0) ? 1 : -1; 
@@ -219,32 +225,26 @@ switch (estado) {
 
         // Crear Hitbox Dinámica
         if (image_index >= _datos.frame_hit && !hitbox_creada) {
-            var _xx = x + ((direccion_mirando == 0) ? 10 : -10); // Desplaza la hitbox un poco hacia adelante
-            var _hitbox = instance_create_layer(_xx, y, "Instances", obj_hitbox);
-            _hitbox.creador = id;
-            _hitbox.dano = _datos.dano;
-            _hitbox.image_angle = direccion_mirando;
-            _hitbox.objetivo_colision = obj_enemigo_dummy;
-            _hitbox.fuerza_empuje = _datos.empuje;
-            _hitbox.direccion_golpe = direccion_mirando;
-            _hitbox.max_objetivos = _datos.max_objetivos;
-            _hitbox.tiempo_aturdido = _datos.tiempo_aturdido;
-            _hitbox.shake_magnitude = _datos.shake_magnitude;
-            _hitbox.enemigos_golpeados = [];
-            hitbox_creada = true;
+            crear_hitbox_ataque(_datos);
         }
 
-        // Salir del ataque
+        // Salir del ataque o encadenar el siguiente golpe del combo
         if (image_index >= image_number - 1) {
-            if (global.key_dash) {
+            if (global.key_dash && dash_cooldown <= 0) {
                 estado = PLAYER_STATE.DASH;
                 image_index = 0;
                 global.buffer_dash = 0;
-            } else if (global.key_ataque_ligero) {
-                image_index = 0; hitbox_creada = false; tipo_ataque = "ligero";
-            } else if (global.key_ataque_pesado) {
-                image_index = 0; hitbox_creada = false; tipo_ataque = "pesado";
+                combo_step = 0; // Dash rompe el combo
             } else {
+                // El combo se pausa, pero damos una ventana de tiempo para continuarlo
+                // Si el temporizador es muy bajo, regresamos a IDLE casi de inmediato
+                combo_step++;
+                if (combo_step >= array_length(_array_ataques)) combo_step = 0;
+                
+                combo_timer = combo_timer_max;
+                
+                // Si no hay input de ataque, volvemos a idle/air para que el jugador
+                // tenga que ser preciso con el timing del siguiente golpe.
                 estado = _en_el_suelo ? PLAYER_STATE.IDLE : PLAYER_STATE.AIR;
             }
         }
@@ -255,7 +255,7 @@ switch (estado) {
     // ------------------------------------------
         invencible = true;
         // Forzamos el movimiento estrictamente horizontal, bloqueando la gravedad
-        vsp = 0; 
+        
         var _dir_dash = (direccion_mirando == 0) ? 1 : -1;
     
         sprite_index = Josh_rueda; 
@@ -263,12 +263,10 @@ switch (estado) {
         hsp = velocidad_roll * _dir_dash;
         // Salir del Dash
         if (image_index >= image_number - 1) {
-            if (global.key_ataque_ligero) {
-                estado = PLAYER_STATE.ATTACK; image_index = 0; hitbox_creada = false; tipo_ataque = "ligero";
-            } else if (global.key_ataque_pesado) {
-                estado = PLAYER_STATE.ATTACK; image_index = 0; hitbox_creada = false; tipo_ataque = "pesado";
-            } else if (global.key_dash) {
-                estado = PLAYER_STATE.DASH; image_index = 0; global.buffer_dash = 0;
+            dash_cooldown = dash_cooldown_max; // Aplicar cooldown al terminar
+            
+            if (intentar_ataque()) {
+                // Si atacamos, ya se cambió de estado en intentar_ataque()
             } else {
                 estado = _en_el_suelo ? PLAYER_STATE.IDLE : PLAYER_STATE.AIR;
                 image_index = 0;
@@ -279,48 +277,50 @@ switch (estado) {
     // ------------------------------------------
     case PLAYER_STATE.AIR_ATTACK: // ESTADO: ATACANDO EN EL AIRE
     // ------------------------------------------
-        var _datos = (tipo_ataque == "ligero") ? arma_equipada.ataque_ligero : arma_equipada.ataque_pesado;
-        // IDEAL: Usar un sprite diferente para el ataque aéreo
-        sprite_index = _datos.sprite; // O un sprite específico como Josh_ataque_aire
-        // 1. GAME FEEL: "Hang Time" (Suspensión en el aire)
-        // Como la gravedad se suma al inicio del Step, aquí la contrarrestamos.
+        // 1. Obtener los datos del golpe actual
+        var _array_ataques = (tipo_ataque == "ligero") ? arma_equipada.ataques_ligeros : arma_equipada.ataques_pesados;
+        
+        if (combo_step >= array_length(_array_ataques)) combo_step = 0;
+        
+        var _datos = _array_ataques[combo_step];
+        sprite_index = _datos.sprite;
+        
+        // 2. GAME FEEL: "Hang Time" (Suspensión en el aire)
         if (image_index < _datos.frame_hit) {
             vsp = 0; // Congelamos la caída mientras prepara el corte
         } else {
-            // Permitimos que empiece a caer suavemente de nuevo
             vsp = min(vsp, 2); 
         }
-        // Conservamos un poco de inercia horizontal (sin frenarlo en seco como en la tierra)
         hsp = lerp(hsp, 0, 0.05); 
-        // 2. Crear Hitbox (Exactamente igual que en tierra)
-        if (image_index >= _datos.frame_hit && !hitbox_creada) {
-            var _xx = x + ((direccion_mirando == 0) ? 10 : -10);
-            var _hitbox = instance_create_layer(_xx, y, "Instances", obj_hitbox);
-            
-            _hitbox.creador = id;
-            _hitbox.dano = _datos.dano;
-            _hitbox.image_angle = direccion_mirando;
-            _hitbox.objetivo_colision = obj_enemigo_dummy;
-            _hitbox.fuerza_empuje = _datos.empuje;
-            _hitbox.direccion_golpe = direccion_mirando;
-            _hitbox.max_objetivos = _datos.max_objetivos;
-            _hitbox.tiempo_aturdido = _datos.tiempo_aturdido;
-            _hitbox.shake_magnitude = _datos.shake_magnitude;
-            _hitbox.enemigos_golpeados = [];
-            hitbox_creada = true;
-        }
-
-        // 3. Salir del ataque aéreo
-        if (image_index >= image_number - 1) {
-            estado = PLAYER_STATE.AIR;
-            
-        }
         
+        // 3. Crear Hitbox (Usando función helper)
+        if (image_index >= _datos.frame_hit && !hitbox_creada) {
+            crear_hitbox_ataque(_datos);
+        }
 
+        // 4. Salir del ataque aéreo o encadenar combo
+        if (image_index >= image_number - 1) {
+            combo_step++;
+            if (combo_step >= array_length(_array_ataques)) combo_step = 0;
+            
+            combo_timer = combo_timer_max;
+            estado = PLAYER_STATE.AIR;
+        }
+
+        // Si tocamos el suelo durante el ataque aéreo
         if (_en_el_suelo) {
             var _dir_x = global.key_right - global.key_left;
             estado = (_dir_x != 0) ? PLAYER_STATE.MOVE : PLAYER_STATE.IDLE;
-            image_index = 0; // ¡Clave para que no se herede el frame de la animación del ataque!
+            image_index = 0; 
+            
+            // No reiniciamos el combo al aterrizar. 
+            // Si ya se creó la hitbox, avanzamos al siguiente paso.
+            if (hitbox_creada) {
+                combo_step++;
+                if (combo_step >= array_length(_array_ataques)) combo_step = 0;
+            }
+            
+            combo_timer = combo_timer_max; // Damos margen para seguir el combo en tierra
         }
     break;
     case PLAYER_STATE.DEAD: // ESTADO: MUERTO
@@ -344,4 +344,3 @@ switch (estado) {
 show_debug_message(estado)
 // 4. APLICAR FÍSICA FINAL
 aplicar_movimiento();
-
