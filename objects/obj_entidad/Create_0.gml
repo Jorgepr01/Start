@@ -15,7 +15,7 @@ vsp_maxima = 8;
 
 // 1. EL ESCÁNER DE TILES
 choca_con_tile = function(_x, _y) {
-    var _tilemap = layer_tilemap_get_id("Tiles_Escaleras");
+    var _tilemap = layer_tilemap_get_id("Tiles_Colisiones");
     if (_tilemap == -1) return false; 
     var _x_real = x;
     var _y_real = y;
@@ -37,10 +37,24 @@ choca_con_entorno = function(_x, _y) {
     var _choca_tile = choca_con_tile(_x, _y);
     var _x_real = x;
     var _y_real = y;
+    
+    // Guardamos el borde inferior actual para la lógica de plataformas atravesables
+    var _actual_bottom = bbox_bottom;
+    
     x = _x; y = _y;
     var _choca_rampa = place_meeting(x, y, obj_rampa) || place_meeting(x, y, obj_rampa_invertida);
+    
+    var _choca_plataforma = false;
+    var _inst_plat = instance_place(x, y, obj_one_way_platform);
+    if (_inst_plat != noone) {
+        // Solo colisionar si caemos, no pulsamos abajo y estábamos sobre la plataforma
+        if (vsp >= 0 && !global.key_down && _actual_bottom <= _inst_plat.bbox_top) {
+            _choca_plataforma = true;
+        }
+    }
+    
     x = _x_real; y = _y_real;
-    return (_choca_tile || _choca_rampa);
+    return (_choca_tile || _choca_rampa || _choca_plataforma);
 };
 
 

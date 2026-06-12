@@ -29,10 +29,9 @@ arma_equipada = inventario_armas[indice_arma];
 tipo_ataque = "ligero";
 hitbox_creada = false;
 
-// --- SISTEMA DE COMBOS ---
-combo_step = 0;           // Índice del golpe actual en el array de ataques (0 = primer golpe)
-combo_timer = 0;          // Temporizador para encadenar el siguiente golpe
-combo_timer_max = 120;     // Ventana de frames reducida para mayor exigencia
+combo_step = 0;
+combo_timer = 0;
+combo_timer_max = 60;
 
 
 // --- FUNCIONES DE AYUDA (Helper Functions) ---

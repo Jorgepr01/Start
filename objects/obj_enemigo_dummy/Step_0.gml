@@ -28,10 +28,6 @@ if (tiempo_flash > 0) {
     tiempo_flash -= 1;
 }
 
-// Opcional: Detectar suelo (útil si quieres que el enemigo solo ataque si está pisando firme)
-// (Ya declarado arriba para la gravedad)
-
-
 // 2. SISTEMA DE FÍSICAS VS INTELIGENCIA ARTIFICIAL
 if (tiempo_aturdido > 0) {
     estado_actual = ENEMY_STATE.DAZED;
@@ -84,7 +80,6 @@ if (instance_exists(obj_jugador)) {
                 }
             break;
             case ENEMY_STATE.ATTACK:
-                // El enemigo se frena para atacar (solo en X)
                 hsp = lerp(hsp, 0, 0.2);
                 sprite_index=Josh_attack
                 

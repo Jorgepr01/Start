@@ -21,6 +21,7 @@
     {"name":"obj_init","order":4,"path":"objects/obj_init/obj_init.yy",},
     {"name":"obj_input_manager","order":2,"path":"objects/obj_input_manager/obj_input_manager.yy",},
     {"name":"obj_menu_principal","order":3,"path":"objects/obj_menu_principal/obj_menu_principal.yy",},
+    {"name":"obj_one_way_platform","order":2,"path":"objects/obj_one_way_platform/obj_one_way_platform.yy",},
     {"name":"obj_rampa_invertida","order":1,"path":"objects/obj_rampa_invertida/obj_rampa_invertida.yy",},
     {"name":"Inicio","order":2,"path":"rooms/Inicio/Inicio.yy",},
     {"name":"prueba","order":3,"path":"rooms/prueba/prueba.yy",},

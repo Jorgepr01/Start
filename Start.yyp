@@ -53,6 +53,7 @@
     {"id":{"name":"obj_input_manager","path":"objects/obj_input_manager/obj_input_manager.yy",},},
     {"id":{"name":"obj_jugador","path":"objects/obj_jugador/obj_jugador.yy",},},
     {"id":{"name":"obj_menu_principal","path":"objects/obj_menu_principal/obj_menu_principal.yy",},},
+    {"id":{"name":"obj_one_way_platform","path":"objects/obj_one_way_platform/obj_one_way_platform.yy",},},
     {"id":{"name":"obj_rampa_invertida","path":"objects/obj_rampa_invertida/obj_rampa_invertida.yy",},},
     {"id":{"name":"obj_rampa","path":"objects/obj_rampa/obj_rampa.yy",},},
     {"id":{"name":"Inicio","path":"rooms/Inicio/Inicio.yy",},},
