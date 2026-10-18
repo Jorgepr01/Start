@@ -33,4 +33,12 @@ function scr_constantes(){
         HURT,
         DEAD
     }
+
+    // Estados de los enemigos
+    enum ENEMY_STATE {
+        IDLE,
+        CHASE,
+        ATTACK,
+        DAZED
+    }
 }

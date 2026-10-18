@@ -14,7 +14,12 @@ if (hit_stop_timer > 0) {
     }
 }
 
+if (tiempo_flash > 0) {
+    tiempo_flash--;
+}
+
 // 1. FÍSICA BASE Y ENTORNO
+quiere_bajar = global.key_down; // Solo el jugador baja de plataformas one-way con abajo
 var _en_el_suelo = choca_con_entorno(x, y + 1);
 
 if (_en_el_suelo) saltos_realizados = 0;
@@ -44,12 +49,12 @@ if (!global.key_salto_mantenido && vsp < 0) {
 }
 
 // 2. CONTROL DE DAÑO Y ATURDIMIENTO
-invencible = false; // Por defecto no somos invencibles
+invencible = (estado == PLAYER_STATE.DEAD); // Por defecto no somos invencibles (salvo muertos)
 // show_debug_message("vida:" + string(hp));
 if (tiempo_aturdido > 0) {
     tiempo_aturdido--;
     hsp = lerp(hsp, 0, 0.1);
-    vsp = lerp(vsp, 0, 0.1); // Opcional: podrías dejar que la gravedad actúe aquí también
+    // vsp no se frena: la gravedad de arriba sigue actuando para no flotar aturdido
     aplicar_movimiento();
     exit; // ¡VITAL! Evita que el resto del código se ejecute
 }
@@ -101,11 +106,7 @@ switch (estado) {
             estado = PLAYER_STATE.MOVE;
         }
         else if (global.key_dash && dash_cooldown <= 0) {
-            estado = PLAYER_STATE.DASH;
-            image_index = 0; 
-            global.buffer_dash = 0; 
-            var _snd_dash = audio_play_sound(sound_dash, 1, false);
-            audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
+            iniciar_dash();
         }
         else if (global.key_cambiar_arma) {
             indice_arma = (indice_arma + 1) mod array_length(inventario_armas);
@@ -142,16 +143,12 @@ switch (estado) {
             jump_buffer = 0;
         }
         else if (global.key_dash && dash_cooldown <= 0) {
-            estado = PLAYER_STATE.DASH;
-            image_index = 0;
-            global.buffer_dash = 0;
-            var _snd_dash = audio_play_sound(sound_dash, 1, false);
-            audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
+            iniciar_dash();
         }
         else {
             intentar_ataque();
         }
-        
+
     break;
 
     // ------------------------------------------
@@ -192,11 +189,7 @@ switch (estado) {
             jump_buffer = 0;
         }
         else if (global.key_dash && dash_cooldown <= 0) { // Dash aéreo
-            estado = PLAYER_STATE.DASH;
-            image_index = 0;
-            global.buffer_dash = 0;
-            var _snd_dash = audio_play_sound(sound_dash, 1, false);
-            audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
+            iniciar_dash();
         }
         else {
             intentar_ataque();
@@ -218,7 +211,7 @@ switch (estado) {
         // Impulso hacia adelante usando 2D (no lengthdir)
         if (image_index < image_number / 2) {
             var _direccion_impulso = (direccion_mirando == 0) ? 1 : -1; 
-            hsp = _datos.attack_speed * _direccion_impulso;
+            hsp = _datos.impulso * _direccion_impulso;
         } else {
             hsp = lerp(hsp, 0, 0.2); // Frena suavemente al terminar el tajo
         }
@@ -231,9 +224,7 @@ switch (estado) {
         // Salir del ataque o encadenar el siguiente golpe del combo
         if (image_index >= image_number - 1) {
             if (global.key_dash && dash_cooldown <= 0) {
-                estado = PLAYER_STATE.DASH;
-                image_index = 0;
-                global.buffer_dash = 0;
+                iniciar_dash();
                 combo_step = 0; // Dash rompe el combo
             } else {
                 // El combo se pausa, pero damos una ventana de tiempo para continuarlo
@@ -305,6 +296,7 @@ switch (estado) {
             
             combo_timer = combo_timer_max;
             estado = PLAYER_STATE.AIR;
+            break; // Evita que el aterrizaje de abajo vuelva a sumar combo_step este mismo frame
         }
 
         // Si tocamos el suelo durante el ataque aéreo
@@ -341,6 +333,5 @@ switch (estado) {
         }
     break;
 }
-show_debug_message(estado)
 // 4. APLICAR FÍSICA FINAL
 aplicar_movimiento();

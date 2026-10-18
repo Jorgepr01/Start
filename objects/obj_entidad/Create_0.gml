@@ -6,6 +6,7 @@ velocidad_base = 2;
 invencible = false;
 hit_stop_timer = 0;
 velocidad_animacion_guardada = 1;
+quiere_bajar = false; // true = atravesar plataformas one-way (el jugador lo controla con abajo)
 
 
 gravedad = 0.4;       // Fuerza constante hacia abajo
@@ -22,10 +23,23 @@ choca_con_tile = function(_x, _y) {
     // Movemos teóricamente al personaje a la posición futura
     x = _x;
     y = _y;
-    var _colision = tilemap_get_at_pixel(_tilemap, bbox_left, bbox_top) ||
-                    tilemap_get_at_pixel(_tilemap, bbox_right, bbox_top) ||
-                    tilemap_get_at_pixel(_tilemap, bbox_left, bbox_bottom) ||
-                    tilemap_get_at_pixel(_tilemap, bbox_right, bbox_bottom);
+    // Revisamos una rejilla de puntos cada TILE_SIZE (no solo las 4 esquinas),
+    // para que una máscara más alta/ancha que un tile no atraviese un tile por el medio
+    var _colision = false;
+    var _yy = bbox_top;
+    while (true) {
+        var _xx = bbox_left;
+        while (true) {
+            if (tilemap_get_at_pixel(_tilemap, _xx, _yy)) {
+                _colision = true;
+                break;
+            }
+            if (_xx >= bbox_right) break;
+            _xx = min(_xx + TILE_SIZE, bbox_right);
+        }
+        if (_colision || _yy >= bbox_bottom) break;
+        _yy = min(_yy + TILE_SIZE, bbox_bottom);
+    }
 
     // Regresamos al personaje a su posición real
     x = _x_real;
@@ -48,7 +62,7 @@ choca_con_entorno = function(_x, _y) {
     var _inst_plat = instance_place(x, y, obj_one_way_platform);
     if (_inst_plat != noone) {
         // Solo colisionar si caemos, no pulsamos abajo y estábamos sobre la plataforma
-        if (vsp >= 0 && !global.key_down && _actual_bottom <= _inst_plat.bbox_top) {
+        if (vsp >= 0 && !quiere_bajar && _actual_bottom <= _inst_plat.bbox_top) {
             _choca_plataforma = true;
         }
     }

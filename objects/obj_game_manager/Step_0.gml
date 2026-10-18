@@ -14,7 +14,8 @@ if (global.key_pause) {
         // instance_activate_object(obj_audio_manager);
         
         // Aquí activarías el objeto que dibuja el menú de pausa
-        instance_create_layer(0, 0, "UI_Layer", obj_menu_principal);
+        // Se dibuja en Draw GUI, así que no depende de que la room tenga "UI_Layer"
+        instance_create_depth(0, 0, -10000, obj_menu_principal);
         
     } 
     else if (global.game_state == GAME_STATE.PAUSED) {

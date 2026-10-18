@@ -23,8 +23,10 @@ if (global.key_action) {
         case 0: // Jugar
             
             if(room==Inicio){
+                global.game_state = GAME_STATE.PLAYING;
                 room_goto(prueba);
             }else{
+                global.game_state = GAME_STATE.PLAYING; // Salir de la pausa
                 instance_activate_all();
                 instance_destroy();
             }

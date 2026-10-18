@@ -13,7 +13,7 @@ if (hit_stop_timer > 0) {
 }
 
 // 1. GRAVEDAD OBLIGATORIA
-var _en_el_suelo = choca_con_tile(x, y + 1);
+var _en_el_suelo = choca_con_entorno(x, y + 1); // Igual que aplicar_movimiento (tiles, rampas y plataformas)
 
 if (!_en_el_suelo) {
     vsp += gravedad;
@@ -26,6 +26,10 @@ if (!_en_el_suelo) {
 
 if (tiempo_flash > 0) {
     tiempo_flash -= 1;
+}
+
+if (cooldown_ataque > 0) {
+    cooldown_ataque -= 1;
 }
 
 // 2. SISTEMA DE FÍSICAS VS INTELIGENCIA ARTIFICIAL
@@ -64,11 +68,16 @@ if (instance_exists(obj_jugador)) {
                     sprite_index=Josh
                 } 
                 // Transición: Atacar si está lo suficientemente cerca
-                else if (_distancia_a_josh <= distancia_ataque) { 
-                    estado_actual = ENEMY_STATE.ATTACK;
-                    image_index = 0; 
-                    hitbox_creada = false; 
-                    
+                else if (_distancia_a_josh <= distancia_ataque) {
+                    if (cooldown_ataque <= 0) {
+                        estado_actual = ENEMY_STATE.ATTACK;
+                        image_index = 0;
+                        hitbox_creada = false;
+                    } else {
+                        // Esperando el cooldown: se queda quieto frente a Josh
+                        hsp = lerp(hsp, 0, 0.2);
+                        sprite_index=Josh
+                    }
                 }
                 else {
                     sprite_index=Josh_step_derecha
@@ -100,8 +109,9 @@ if (instance_exists(obj_jugador)) {
                     hitbox_creada = true;
                 }
                 // Terminar el ataque
-                if (image_index + image_speed >= image_number) {
+                if (image_index >= image_number - 1) {
                     estado_actual = ENEMY_STATE.IDLE;
+                    cooldown_ataque = cooldown_ataque_max;
                 }
             break;
         }

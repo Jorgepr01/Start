@@ -2,7 +2,8 @@
 mask_index = spr_Kenji;
 // IMPORTANTE: Heredar las variables y funciones del padre
 event_inherited(); 
-hp = 100; 
+hp = 100;
+hp_max = 100;
 tiempo_flash = 0;
 tiempo_aturdido = 0;
 velocidad_base = 1.5; 
@@ -50,6 +51,14 @@ crear_hitbox_ataque = function(_datos) {
     _hitbox.shake_magnitude = _datos.shake_magnitude;
     _hitbox.enemigos_golpeados = [];
     hitbox_creada = true;
+};
+
+iniciar_dash = function() {
+    estado = PLAYER_STATE.DASH;
+    image_index = 0;
+    global.buffer_dash = 0;
+    var _snd_dash = audio_play_sound(sound_dash, 1, false);
+    audio_sound_pitch(_snd_dash, random_range(0.9, 1.1));
 };
 
 intentar_ataque = function() {
