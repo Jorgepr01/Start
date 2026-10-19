@@ -17,13 +17,16 @@ vsp_maxima = 8;
 // 1. EL ESCÁNER DE TILES
 choca_con_tile = function(_x, _y) {
     var _tilemap = layer_tilemap_get_id("Tiles_Colisiones");
-    if (_tilemap == -1) return false; 
+    if (_tilemap == -1) return false;
+    // Tamaño real del tile del tileset (8px en prueba, 4px en Room1), no TILE_SIZE
+    var _tw = tilemap_get_tile_width(_tilemap);
+    var _th = tilemap_get_tile_height(_tilemap);
     var _x_real = x;
     var _y_real = y;
     // Movemos teóricamente al personaje a la posición futura
     x = _x;
     y = _y;
-    // Revisamos una rejilla de puntos cada TILE_SIZE (no solo las 4 esquinas),
+    // Revisamos una rejilla de puntos cada tile (no solo las 4 esquinas),
     // para que una máscara más alta/ancha que un tile no atraviese un tile por el medio
     var _colision = false;
     var _yy = bbox_top;
@@ -35,10 +38,10 @@ choca_con_tile = function(_x, _y) {
                 break;
             }
             if (_xx >= bbox_right) break;
-            _xx = min(_xx + TILE_SIZE, bbox_right);
+            _xx = min(_xx + _tw, bbox_right);
         }
         if (_colision || _yy >= bbox_bottom) break;
-        _yy = min(_yy + TILE_SIZE, bbox_bottom);
+        _yy = min(_yy + _th, bbox_bottom);
     }
 
     // Regresamos al personaje a su posición real
@@ -59,11 +62,15 @@ choca_con_entorno = function(_x, _y) {
     var _choca_rampa = place_meeting(x, y, obj_rampa) || place_meeting(x, y, obj_rampa_invertida);
     
     var _choca_plataforma = false;
-    var _inst_plat = instance_place(x, y, obj_one_way_platform);
-    if (_inst_plat != noone) {
-        // Solo colisionar si caemos, no pulsamos abajo y estábamos sobre la plataforma
-        if (vsp >= 0 && !quiere_bajar && _actual_bottom <= _inst_plat.bbox_top) {
-            _choca_plataforma = true;
+    // Solo colisionar si caemos, no queremos bajar y estábamos sobre la plataforma.
+    // Revisamos TODAS las plataformas que tocamos (instance_place solo devuelve una)
+    if (vsp >= 0 && !quiere_bajar) {
+        var _entidad = id;
+        with (obj_one_way_platform) {
+            if (_actual_bottom <= bbox_top && place_meeting(x, y, _entidad)) {
+                _choca_plataforma = true;
+                break;
+            }
         }
     }
     

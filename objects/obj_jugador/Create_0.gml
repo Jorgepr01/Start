@@ -16,6 +16,11 @@ coyote_time = 0;
 coyote_time_max = 5;
 jump_buffer = 0;
 jump_buffer_max = 5;
+salto_cortable = false; // true mientras el salto actual aún puede cortarse al soltar el botón
+
+// Plataformas one-way: un toque de abajo basta para atravesarlas
+bajar_timer = 0;
+bajar_timer_max = 10;
 
 velocidad_roll = 2;
 dash_cooldown = 0;

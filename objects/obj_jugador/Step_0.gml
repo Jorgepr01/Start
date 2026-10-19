@@ -19,7 +19,11 @@ if (tiempo_flash > 0) {
 }
 
 // 1. FÍSICA BASE Y ENTORNO
-quiere_bajar = global.key_down; // Solo el jugador baja de plataformas one-way con abajo
+// Solo el jugador baja de plataformas one-way con abajo.
+// El timer evita que un toque rápido nos deje atrapados otra vez en la plataforma.
+if (global.key_down_pressed) bajar_timer = bajar_timer_max;
+if (bajar_timer > 0) bajar_timer--;
+quiere_bajar = global.key_down || bajar_timer > 0;
 var _en_el_suelo = choca_con_entorno(x, y + 1);
 
 if (_en_el_suelo) saltos_realizados = 0;
@@ -44,8 +48,11 @@ if (estado != PLAYER_STATE.DASH) {
 }
 
 // Control de altura de salto (Game Feel: Si sueltas el botón, caes más rápido)
-if (!global.key_salto_mantenido && vsp < 0) {
-    vsp *= 0.5; 
+// Se corta UNA sola vez por salto y solo en saltos propios (no en el knockback)
+if (vsp >= 0) salto_cortable = false;
+if (salto_cortable && !global.key_salto_mantenido) {
+    vsp *= 0.5;
+    salto_cortable = false;
 }
 
 // 2. CONTROL DE DAÑO Y ATURDIMIENTO
@@ -98,6 +105,7 @@ switch (estado) {
         }
         else if (jump_buffer > 0) {
             vsp = -fuerza_salto;
+            salto_cortable = true;
             estado = PLAYER_STATE.AIR;
             saltos_realizados = 1;
             jump_buffer = 0;
@@ -138,6 +146,7 @@ switch (estado) {
         }
         else if (jump_buffer > 0) {
             vsp = -fuerza_salto;
+            salto_cortable = true;
             estado = PLAYER_STATE.AIR;
             saltos_realizados = 1;
             jump_buffer = 0;
@@ -155,7 +164,13 @@ switch (estado) {
     case PLAYER_STATE.AIR: // ESTADO: EN EL AIRE (NUEVO)
     // ------------------------------------------
         var _dir_x = global.key_right - global.key_left;
-        
+
+        // Si se acabó el coyote time sin saltar, el salto de suelo se pierde:
+        // solo queda el doble salto (antes caer de un borde daba 2 saltos aéreos)
+        if (coyote_time <= 0 && saltos_realizados == 0) {
+            saltos_realizados = 1;
+        }
+
         sprite_index = spr_Kenji;
         // Movilidad aérea (Air Control)
         if (_dir_x != 0) {
@@ -180,12 +195,12 @@ switch (estado) {
             if (coyote_time > 0 && saltos_realizados == 0) {
                 vsp = -fuerza_salto;
                 saltos_realizados = 1;
-                coyote_time = 0;
             } else {
-                vsp = (saltos_realizados == 0) ? -fuerza_salto : -fuerza_segundo_salto;
+                vsp = -fuerza_segundo_salto;
                 saltos_realizados++;
-                coyote_time = 0;
             }
+            coyote_time = 0;
+            salto_cortable = true;
             jump_buffer = 0;
         }
         else if (global.key_dash && dash_cooldown <= 0) { // Dash aéreo
