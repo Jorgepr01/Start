@@ -38,7 +38,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1400.4.986",
+    "IDEVersion":"2024.14.3.217",
   },
   "name":"Start",
   "resources":[
@@ -95,7 +95,7 @@
     {"id":{"name":"spr_Kenji_shuriken_ligero_1","path":"sprites/spr_Kenji_shuriken_ligero_1/spr_Kenji_shuriken_ligero_1.yy",},},
     {"id":{"name":"spr_Kenji_shuriken_ligero_2","path":"sprites/spr_Kenji_shuriken_ligero_2/spr_Kenji_shuriken_ligero_2.yy",},},
     {"id":{"name":"spr_Kenji_shuriken","path":"sprites/spr_Kenji_shuriken/spr_Kenji_shuriken.yy",},},
-    {"id":{"name":"spr_Kenji_walk_1","path":"sprites/spr_Kenji_walk_1/spr_Kenji_walk_1.yy",},},
+    {"id":{"name":"spr_Kenji_walk_i","path":"sprites/spr_Kenji_walk_i/spr_Kenji_walk_i.yy",},},
     {"id":{"name":"spr_Kenji_walk","path":"sprites/spr_Kenji_walk/spr_Kenji_walk.yy",},},
     {"id":{"name":"spr_Kenji","path":"sprites/spr_Kenji/spr_Kenji.yy",},},
     {"id":{"name":"Sprite18","path":"sprites/Sprite18/Sprite18.yy",},},
@@ -103,6 +103,7 @@
     {"id":{"name":"Sprite21","path":"sprites/Sprite21/Sprite21.yy",},},
     {"id":{"name":"Sprite23","path":"sprites/Sprite23/Sprite23.yy",},},
     {"id":{"name":"Sprite4","path":"sprites/Sprite4/Sprite4.yy",},},
+    {"id":{"name":"Sprite40","path":"sprites/Sprite40/Sprite40.yy",},},
     {"id":{"name":"TileSet1","path":"tilesets/TileSet1/TileSet1.yy",},},
     {"id":{"name":"TileSet2","path":"tilesets/TileSet2/TileSet2.yy",},},
   ],

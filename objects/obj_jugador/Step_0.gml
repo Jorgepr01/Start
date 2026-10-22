@@ -125,7 +125,7 @@ switch (estado) {
             hsp = _dir_x * velocidad_base;
             image_xscale = _dir_x; // Voltea el sprite visualmente
             direccion_mirando = (image_xscale == 1) ? 0 : 180; // 0 derecha, 180 izquierda
-            sprite_index = spr_Kenji_walk_1; // Sprite base de correr
+            sprite_index = spr_Kenji_walk_i; // Sprite base de correr
         } else {
             estado = PLAYER_STATE.IDLE;
         }
